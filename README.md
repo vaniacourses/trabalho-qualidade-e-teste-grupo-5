@@ -28,7 +28,24 @@ A aplicação foi migrada para o **Java 17** e adota o **Maven** como gerenciado
 
 ## • Arquitetura do Projeto
 
-A estrutura de diretórios foi organizada seguindo as convenções do Maven, dividindo claramente as regras de negócio, a interface de usuário e as diferentes camadas de teste:
+A estrutura de diretórios foi organizada para separar claramente o código-fonte, a documentação e as configurações de ferramentas auxiliares.
+
+### Estrutura Principal
+
+```text
+.
+├── src/                  # Código-fonte e testes (Padrão Maven)
+│   ├── main/java/        # Regras de negócio e interface
+│   └── test/java/        # Testes unitários, de integração e de GUI
+├── docs/                 # Documentação do projeto
+│   ├── trabalho.md       # Escopo, regras e requisitos do trabalho prático
+│   └── plano-de-teste.md # Estratégia e planejamento dos testes
+└── .agent/               # Contexto e instruções para Agentes de IA
+    ├── instrucoes.md     # Regras de fluxo, arquitetura e convenções
+    └── sessions/         # Histórico de sessões de IA
+```
+
+### Estrutura do Código (`src/`)
 
 ```text
 src
@@ -92,7 +109,7 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 
 ### Primeira Entrega
 
-- [**Template Base do Plano de Testes**](./PlanoDeTeste.md)
+- [**Template Base do Plano de Testes**](./docs/plano-de-teste.md)
 - [**Plano de Testes Preenchido**]()
 - [**Apresentação**]()
 

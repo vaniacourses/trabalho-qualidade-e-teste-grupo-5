@@ -5,7 +5,7 @@
 - Sempre verifique se o `pom.xml` existe. Se não existir, você está trabalhando em uma base de código que possui a estrutura Maven (`src/main/java`), mas ainda não possui a configuração do Maven. Não execute comandos `mvn` até que o `pom.xml` seja criado.
 
 ## Escopo do Projeto & Atividades
-- **CRÍTICO**: Sempre consulte o arquivo `TRABALHO.md` como a fonte primária da verdade para as atividades, entregas e requisitos que devem ser cumpridos ao longo deste projeto. Ele contém o escopo detalhado para testes, inspeção de código e prazos.
+- **CRÍTICO**: Sempre consulte o arquivo `docs/trabalho.md` como a fonte primária da verdade para as atividades, entregas e requisitos que devem ser cumpridos ao longo deste projeto. Ele contém o escopo detalhado para testes, inspeção de código e prazos.
 
 ## Arquitetura & Ponto de Entrada
 - Esta é uma aplicação Java Swing OOP legada que está sendo refatorada para uma aula de Qualidade e Teste de Software.
