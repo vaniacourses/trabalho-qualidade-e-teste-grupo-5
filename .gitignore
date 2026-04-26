@@ -1,2 +1,11 @@
 .DS_Store
 session*.md
+target/
+*.class
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+bin/
