@@ -1,28 +1,29 @@
-# OpenCode Agent Instructions
+# Instruções para o Agente OpenCode
 
-## Repository State & Migration Notice
-- **CRITICAL**: The `README.md` describes the *target* state of the repository (Maven, Java 17, `src/main/java` structure), but the repository is currently transitioning from a legacy state. 
-- Always verify if `pom.xml` exists. If it does not, you are working in the legacy codebase with root directories `backend/`, `frontend/`, and `inicio/`. Do not run `mvn` commands until the migration to a standard Maven structure is complete.
+## Estado do Repositório & Aviso de Migração
+- **CRÍTICO**: O `README.md` descreve o estado *alvo* do repositório (Maven, Java 17, estrutura `src/main/java`), e o repositório já foi movido para esta estrutura.
+- Sempre verifique se o `pom.xml` existe. Se não existir, você está trabalhando em uma base de código que possui a estrutura Maven (`src/main/java`), mas ainda não possui a configuração do Maven. Não execute comandos `mvn` até que o `pom.xml` seja criado.
 
-## Project Scope & Activities
-- **CRITICAL**: Always refer to the `TRABALHO.md` file as the primary source of truth for the activities, deliverables, and requirements that must be accomplished throughout this project. It contains the detailed scope for tests, code inspection, and deadlines.
+## Escopo do Projeto & Atividades
+- **CRÍTICO**: Sempre consulte o arquivo `TRABALHO.md` como a fonte primária da verdade para as atividades, entregas e requisitos que devem ser cumpridos ao longo deste projeto. Ele contém o escopo detalhado para testes, inspeção de código e prazos.
 
-## Architecture & Entrypoint
-- This is a legacy Java Swing OOP application being refactored for a Software Quality and Testing class.
-- The main entrypoint of the application is `inicio.MedAlerta` located at `inicio/MedAlerta.java`.
-- The GUI is built using Java Swing (found in the `frontend/` package).
+## Arquitetura & Ponto de Entrada
+- Esta é uma aplicação Java Swing OOP legada que está sendo refatorada para uma aula de Qualidade e Teste de Software.
+- O ponto de entrada principal da aplicação é `inicio.MedAlerta` localizado em `src/main/java/inicio/MedAlerta.java`.
+- A GUI é construída usando Java Swing (encontrada no pacote `src/main/java/frontend/`).
 
-## Testing Conventions (Target)
-- Once the Maven environment is set up, tests should be written in `src/test/java`.
-- **Unit Tests**: Use JUnit (4/5) and Mockito for isolated business logic (`backend`).
-- **Integration Tests**: Place them under `backend/integracao` for flows between modules and file persistence.
-- **GUI / System Tests**: Use `AssertJ Swing` for the Swing components (`frontend`).
-- **Code Quality & Mutation Testing**: The project uses JaCoCo for coverage and PIT (Pitest) for mutation testing. Always ensure new tests are robust enough to pass mutation coverage.
+## Convenções de Teste (Alvo)
+- Os testes devem ser escritos em `src/test/java`.
+- **Testes Unitários**: Use JUnit (4/5) e Mockito para lógica de negócio isolada (`backend`).
+- **Testes de Integração**: Coloque-os em `src/test/java/backend/integracao` para fluxos entre módulos e persistência de arquivos.
+- **Testes de GUI / Sistema**: Use `AssertJ Swing` para os componentes Swing (`src/test/java/frontend`).
+- **Qualidade de Código & Testes de Mutação**: O projeto utiliza JaCoCo para cobertura e PIT (Pitest) para testes de mutação. Sempre garanta que os novos testes sejam robustos o suficiente para passar na cobertura de mutação.
 
-## Modifying Code
-- Respect the existing Java Swing patterns. Do not introduce non-Swing UI libraries.
-- When writing tests, focus on identifying technical debt and refactoring legacy logic to be more testable.
+## Modificando o Código
+- Respeite os padrões Java Swing existentes. Não introduza bibliotecas de UI que não sejam Swing.
+- Ao escrever testes, concentre-se em identificar dívidas técnicas e refatorar a lógica legada para torná-la mais testável.
 
-## Git & GitHub Workflow
-- **Language**: All communication and documentation on GitHub (PRs, issues, comments, commits) MUST be in Portuguese.
-- **Pull Requests**: Always open PRs against the main repository (`vaniacourses/trabalho-qualidade-e-teste-grupo-5`). If using `gh pr create`, explicitly specify the repo with `--repo vaniacourses/trabalho-qualidade-e-teste-grupo-5`.
+## Workflow Git & GitHub
+- **Idioma**: Toda a comunicação e documentação no GitHub (PRs, issues, comentários, commits) DEVE ser em português. Isso inclui obrigatoriamente as mensagens de commit.
+- **Branch Protection**: NUNCA realize commits diretamente na branch `main`. Sempre utilize branches de funcionalidades (feature branches) e abra um Pull Request para integrar suas alterações. Antes de criar uma nova branch, você DEVE sempre perguntar ao usuário.
+- **Pull Requests**: Sempre abra PRs contra o repositório principal (`vaniacourses/trabalho-qualidade-e-teste-grupo-5`). Se estiver usando `gh pr create`, especifique explicitamente o repositório com `--repo vaniacourses/trabalho-qualidade-e-teste-grupo-5`.
