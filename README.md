@@ -106,8 +106,9 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 
 ### Primeira Entrega
 
-- [**Template Base do Plano de Testes**](./PlanoDeTeste.md)
-- [**Plano de Testes Preenchido**]()
+- [**Template Base do Plano de Testes**](./docs/PLANO_DE_TESTE.md)
+- [**Testes Manuais Realizados**](./docs/testes_manuais/)
+- [**Especificação do Trabalho**](./docs/TRABALHO.md)
 - [**Apresentação**]()
 
 #### Segunda Entrega
