@@ -24,4 +24,5 @@
 - When writing tests, focus on identifying technical debt and refactoring legacy logic to be more testable.
 
 ## Git & GitHub Workflow
+- **Language**: All communication and documentation on GitHub (PRs, issues, comments, commits) MUST be in Portuguese.
 - **Pull Requests**: Always open PRs against the main repository (`vaniacourses/trabalho-qualidade-e-teste-grupo-5`). If using `gh pr create`, explicitly specify the repo with `--repo vaniacourses/trabalho-qualidade-e-teste-grupo-5`.
