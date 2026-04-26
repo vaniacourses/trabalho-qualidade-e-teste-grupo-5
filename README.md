@@ -54,6 +54,20 @@ src
 - Maven instalado e devidamente configurado nas variáveis de ambiente
 - (Opcional) Instância do SonarQube em execução local na porta 9000
 
+### Como Executar a Aplicação
+
+Para compilar e iniciar o sistema manualmente, utilize os seguintes comandos no terminal:
+
+1. **Compilar o projeto:**
+   ```bash
+   mvn clean compile
+   ```
+
+2. **Iniciar a aplicação:**
+   ```bash
+   java -cp target/classes inicio.MedAlerta
+   ```
+
 ### Comandos Essenciais do Maven
 
 Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para gerenciar o ciclo de vida dos testes:
