@@ -111,7 +111,8 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 - [**Especificação do Trabalho**](./docs/TRABALHO.md)
 - [**Plano de Testes**](./docs/PLANO_DE_TESTE.md) ou (https://docs.google.com/document/d/1bwteCF50jB--BLISjtX2zsVKDJhSQqzDmmCRV9LKiVg/edit?tab=t.0)
 - [**Testes Unitários Realizados**](./src/test/java/backend)
-- [**Apresentação**]()
+- [**Código Fonte Original**](https://github.com/valescamoura/MedAlertaV2)
+- [**Apresentação**](./docs/Apresentação.pdf)
 
 #### Segunda Entrega
 
