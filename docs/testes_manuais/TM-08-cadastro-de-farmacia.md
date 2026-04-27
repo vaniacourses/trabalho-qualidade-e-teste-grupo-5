@@ -8,6 +8,7 @@
   - Email: farmacia@email.com
   - Senha: 123
   - CNPJ: 123
+  - Telefone: 123
   - Nome: farmacia
   - Endereço (Rua): Rua A
   - Número: 1
@@ -25,6 +26,6 @@
 | PASSO | ETAPAS | RESULTADOS ESPERADOS | RESULTADOS REAIS | PASSOU/FALHOU |
 | --- | --- | --- | --- | --- |
 | 1 | Clicar no botão "Iniciar" correspondente a "Fazer cadastro como farmácia" na tela inicial. | Abrir a tela de cadastro de farmácia (LoginFarmacia). | A tela de cadastro foi aberta com sucesso. | Passou |
-| 2 | Preencher os campos: Email, Senha, Nome da farmácia, CNPJ, Telefone (não fornecido, usado "000"), Nome da rua, Número e Complemento. | Campos preenchidos corretamente. | Os campos foram preenchidos com os dados de teste. | Passou |
+| 2 | Preencher os campos: Email, Senha, Nome da farmácia, CNPJ, Telefone (123), Nome da rua, Número e Complemento. | Campos preenchidos corretamente. | Os campos foram preenchidos com os dados de teste. | Passou |
 | 3 | Clicar no botão "Prox.". | O sistema deve salvar os dados e abrir a tela HomeDaFarmacia. | Os dados foram salvos no arquivo e a tela HomeDaFarmacia foi exibida. | Passou |
 | 4 | Verificar a existência da farmácia no arquivo de registros. | Os dados da farmácia devem estar presentes no arquivo `backend\farmacia\RegistroFarmacias.txt`. | Os dados foram persistidos corretamente. | Passou |
