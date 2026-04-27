@@ -129,7 +129,6 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 | Organização do github | Alexandre |
 | Slides | Sandro, Gabriel e Mateus |
 | Planilha para testes manuais | Sandro |
-| Testes unitários | Todos |
 | TestLink | Gabriel |
 
 
