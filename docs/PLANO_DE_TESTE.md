@@ -17,7 +17,7 @@
 | Versão | Data | Autor    | Descrição |
 |------|--------|----------|--------   |
 | 1.0  | 18/04/2026 | Leonardo Carvalho | Criação do documento de acordo com o template |
-| 1.1  | 25/05/2026 | Leonardo Carvalho | Preenchimento do documento com algumas informações dos testes realizados até o momento |
+| 1.1  | 25/04/2026 | Leonardo Carvalho | Preenchimento do documento com algumas informações dos testes realizados até o momento |
 | 1.2  | 27/04/2026 | Sandro Teixeira | Finalização da primeira entrega do Plano de Testes, preenchendo as informações faltantes (Requisitos funcionais e não funcionais que estão dentro e fora do escopo) |
 
 ---
@@ -45,10 +45,10 @@ Para isso, serão adotadas abordagens de testes unitários e testes manuais, con
 | Nome do Módulo | Papéis Aplicáveis | Descrição |
 | :--- | :---: | :--- |
 | Login de Usuário | Cliente | O Cliente pode se autenticar no sistema, caso já tenha uma conta criada no sistema |
-| Adicionar Contato Médico | Cliente | O Cliente pode adicionar várias contatos médicos em uma agenda no sistema |
+| Adicionar Contato Médico | Cliente | O Cliente pode adicionar vários contatos médicos em uma agenda no sistema |
 | Cadastro de Cliente | Cliente | O Cliente pode realizar um cadastro no sistema preenchendo suas informações |
 | Cadastro de Remédio | Cliente | O Cliente pode adicionar vários remédios, contendo as informações necessárias |
-| Cadastro de Farmácia | Cliente | O Cliente pode adicionar vários remédios, contendo as informações necessárias |
+| Cadastro de Farmácia | Cliente | A Farmácia pode cadastrar seus dados no sistema |
 
 
 ### Requisitos Funcionais no Escopo
@@ -60,8 +60,8 @@ Para isso, serão adotadas abordagens de testes unitários e testes manuais, con
 | RF03 – Cadastro de medicamentos | Testar inclusão e edição de medicamentos |
 | RF04 – Gerenciamento de horários | Validar agendamento e controle de horários de medicação |
 | RF05 – Geração de alertas | Verificar notificações e lembretes de uso |
-| RF06 – Controle de estoque | Testar atualização e monitoramento da quantidade disponível |
-| RF07 – Cadastro de contatos médicos | Validar gerenciamento dos contatos médicos |
+| RF06 – Cadastro de Contatos Médicos | Testar o gerenciamento e cadastro de contatos médicos |
+| RF07 – Cadastro de Farmácia | Validar o cadastro de farmácias e suas informações no sistema |
 | RF08 – Regras de negócio | Testar lógica de uso de medicamentos, datas e verificações do sistema |
 
 ### Requisitos Não Funcionais no Escopo
@@ -113,10 +113,6 @@ Nos testes unitários, o foco é verificar o funcionamento correto das classes d
 
 Além disso, os testes visam garantir a integridade dos dados, o tratamento de entradas inválidas e a estabilidade do sistema durante sua execução.
 
-**OFF: Caso esteja faltando informações de funcionalidades ou testes unitários já testados, favor incluir!**
-
----
-
 ## 👥 1.3. Papéis e Responsabilidades
 
 > 📢 **Instrução:** Defina quem faz o quê no projeto.
@@ -160,7 +156,7 @@ Os testes serão retomados após a correção dos problemas identificados, garan
 
 ---
 
-### ✅ 2.3 Critérios de Conclusão
+### ✅ 2.3 Completude do Teste
 
 > 📢 **Instrução:** Defina quando os testes serão considerados finalizados.
 
@@ -255,6 +251,6 @@ Para a execução do sistema e realização dos testes, é necessário dispor de
 | JUnit | Framework para testes unitários em Java |
 | Mockito | Biblioteca para criação de mocks em testes |
 | RF | Requisito Funcional |
-| RF | Requisito não Funcional |
+| RNF | Requisito não Funcional |
 
 ---
