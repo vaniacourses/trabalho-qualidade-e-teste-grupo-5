@@ -121,11 +121,17 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 > 📢 **Instrução:** Defina quem faz o quê no projeto.
 
-| Papel | Responsável | Responsabilidades |
-|------|-------------|------------------|
-|      |             |                  |
-|      |             |                  |
-|      |             |                  |
+| Papel | Responsável 
+|------|-------------|
+| Plano de Teste  | Leonardo e Sandro  |
+| Testes manuais | Todos |
+| Testes unitários | Todos |
+| Organização do github | Alexandre |
+| Slides | Sandro, Gabriel e Mateus |
+| Planilha para testes manuais | Sandro |
+| Testes unitários | Todos |
+| TestLink | Gabriel |
+
 
 ---
 
@@ -172,11 +178,12 @@ Os testes serão considerados concluídos quando:
 
 > 📢 **Instrução:** Planeje as datas das atividades de teste.
 
-| Atividade | Início | Fim | Responsável |
-|----------|--------|-----|--------------|
-|          |        |     |              |
-|          |        |     |              |
-|          |        |     |              |
+| Atividade | Início | Fim | 
+|----------|--------|------|
+| Planejamento dos testes | 15/04/2026 | 19/04/2026 |
+| Execução dos testes manuais e unitários | 20/04/2026 | 27/04/2026 | 
+| Consolidação dos resultados e entrega | 24/04/2026 | 27/04/2026 |
+| Plano de Testes | 24/04/2026 | 27/04/2026 |
 
 ---
 
