@@ -109,6 +109,8 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 - [**Template Base do Plano de Testes**](./docs/PLANO_DE_TESTE.md)
 - [**Testes Manuais Realizados**](./docs/testes_manuais/)
 - [**Especificação do Trabalho**](./docs/TRABALHO.md)
+- [**Plano de Testes**](./docs/PLANO_DE_TESTE.md) ou (https://docs.google.com/document/d/1bwteCF50jB--BLISjtX2zsVKDJhSQqzDmmCRV9LKiVg/edit?tab=t.0)
+- [**Testes Unitários Realizados**](./src/test/java/backend)
 - [**Apresentação**]()
 
 #### Segunda Entrega
