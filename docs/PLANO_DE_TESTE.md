@@ -18,6 +18,7 @@
 |------|--------|----------|--------   |
 | 1.0  | 18/04/2026 | Leonardo Carvalho | Criação do documento de acordo com o template |
 | 1.1  | 25/05/2026 | Leonardo Carvalho | Preenchimento do documento com algumas informações dos testes realizados até o momento |
+| 1.2  | 27/04/2026 | Sandro Teixeira | Finalização da primeira entrega do Plano de Testes, preenchendo as informações faltantes (Requisitos funcionais e não funcionais que estão dentro e fora do escopo) |
 
 ---
 
@@ -34,10 +35,10 @@ Para isso, serão adotadas abordagens de testes unitários e testes manuais, con
 
 ---
 
-## 🎯 2. Escopo
+## 🎯 1.1. Escopo
 
 
-### ✅ 2.1 No Escopo
+### ✅ 1.1.1 No Escopo
 
 > 📢 **Instrução:** Liste as funcionalidades que SERÃO testadas.
 
@@ -45,28 +46,63 @@ Para isso, serão adotadas abordagens de testes unitários e testes manuais, con
 | :--- | :---: | :--- |
 | Login de Usuário | Cliente | O Cliente pode se autenticar no sistema, caso já tenha uma conta criada no sistema |
 | Adicionar Contato Médico | Cliente | O Cliente pode adicionar várias contatos médicos em uma agenda no sistema |
-| Cadastro de Cliente | Cliente | O Cliente pode realizar um cadastro no sistema preenchendo suas informações
+| Cadastro de Cliente | Cliente | O Cliente pode realizar um cadastro no sistema preenchendo suas informações |
+| Cadastro de Remédio | Cliente | O Cliente pode adicionar vários remédios, contendo as informações necessárias |
+| Cadastro de Farmácia | Cliente | O Cliente pode adicionar vários remédios, contendo as informações necessárias |
 
-**OBS: Caso tenha mais, por favor adicione!**
 
+### Requisitos Funcionais no Escopo
+
+| Requisito | Descrição |
+|----------|-----------|
+| RF01 – Autenticação de usuários | Validar login e acesso ao sistema |
+| RF02 – Cadastro de usuários | Testar criação e validação de contas |
+| RF03 – Cadastro de medicamentos | Testar inclusão e edição de medicamentos |
+| RF04 – Gerenciamento de horários | Validar agendamento e controle de horários de medicação |
+| RF05 – Geração de alertas | Verificar notificações e lembretes de uso |
+| RF06 – Controle de estoque | Testar atualização e monitoramento da quantidade disponível |
+| RF07 – Cadastro de contatos médicos | Validar gerenciamento dos contatos médicos |
+| RF08 – Regras de negócio | Testar lógica de uso de medicamentos, datas e verificações do sistema |
+
+### Requisitos Não Funcionais no Escopo
+
+| Requisito | Descrição |
+|----------|-----------|
+| RNF01 – Usabilidade | Verificar facilidade de uso da interface |
+| RNF02 – Confiabilidade | Garantir funcionamento correto dos alertas e regras do sistema |
+| RNF03 – Integridade dos dados | Validar consistência dos dados cadastrados |
+| RNF04 – Manutenibilidade | Validar código por meio de testes unitários |
+| RNF05 – Compatibilidade | Testes em ambiente Java suportado pelo projeto |
 
 ---
 
-### ❌ 2.2 Fora do Escopo
+### ❌ 1.1.2 Fora do Escopo
 
 > 📢 **Instrução:** Liste o que NÃO será testado.
 
 Esses recursos não serão testados porque não estão incluídos nas especificações de requisitos do software
 
-- Interfaces de hardware
-- Interfaces de software
-- Lógica de banco de dados
-- Interfaces de comunicação
-- Desempenho do sistema 
+### Requisitos Funcionais Fora do Escopo
+
+| Requisito | Justificativa |
+|----------|----------------|
+| Integrações com hardware/dispositivos médicos | Não implementadas no projeto |
+| Integrações com sistemas externos | Não fazem parte da versão atual |
+| Funcionalidades de integração com serviços externos (e-mail/SMS/APIs) | Não implementadas na versão atual do sistema |
+
+### Requisitos Não Funcionais Fora do Escopo
+
+| Requisito | Justificativa |
+|----------|----------------|
+| Testes de carga e stress | Não previstos para esta fase |
+| Testes de segurança avançados | Fora do escopo acadêmico do projeto |
+| Testes de desempenho em larga escala | Não aplicável nesta entrega |
+| Testes de banco de dados em alto volume | Não contemplados |
+| Testes de disponibilidade e infraestrutura | Não fazem parte do escopo atual |
 
 ---
 
-## 🧪 3. Objetivos de Qualidade
+## 🧪 1.2. Objetivos de Qualidade
 
 > 📢 **Instrução:** Descreva o que os testes pretendem garantir (ex: funcionamento correto, segurança, etc).
 
@@ -81,7 +117,7 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 ---
 
-## 👥 4. Papéis e Responsabilidades
+## 👥 1.3. Papéis e Responsabilidades
 
 > 📢 **Instrução:** Defina quem faz o quê no projeto.
 
@@ -93,9 +129,9 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 ---
 
-## 🔬 5. Metodologia de Teste
+## 🔬 2. Metodologia de Teste
 
-### 🔄 5.1 Fases de Teste
+### 🔄 2.1 Fases de Teste
 
 > 📢 **Instrução:** Descreva como cada tipo de teste será realizado no projeto.
 
@@ -109,7 +145,7 @@ No projeto serão conduzidas as seguintes fases de teste:
 
 ---
 
-### ⛔ 5.2 Critérios de Suspensão e Retomada
+### ⛔ 2.2 Critérios de Suspensão e Retomada
 
 > 📢 **Instrução:** Defina quando os testes devem parar e quando devem voltar.
 
@@ -119,7 +155,7 @@ Os testes serão retomados após a correção dos problemas identificados, garan
 
 ---
 
-### ✅ 5.3 Critérios de Conclusão
+### ✅ 2.3 Critérios de Conclusão
 
 > 📢 **Instrução:** Defina quando os testes serão considerados finalizados.
 
@@ -132,7 +168,7 @@ Os testes serão considerados concluídos quando:
 
 ---
 
-## 📅 6. Cronograma
+## 📅 2.4. Atividades do projeto, estimativas e cronograma
 
 > 📢 **Instrução:** Planeje as datas das atividades de teste.
 
@@ -144,7 +180,7 @@ Os testes serão considerados concluídos quando:
 
 ---
 
-## 📦 7. Entregáveis de Teste
+## 📦 3. Entregáveis de Teste
 
 > 📢 **Instrução:** Liste os artefatos gerados antes, durante e depois dos testes.
 
@@ -173,9 +209,9 @@ Os entregáveis de teste são fornecidos conforme abaixo
 
 ---
 
-## 🖥️ 8. Recursos e Ambiente
+## 🖥️ 4. Necessidades de Recursos e Ambiente
 
-### 🧰 8.1 Ferramentas de Teste
+### 🧰 4.1 Ferramentas de Teste
 
 > 📢 **Instrução:** Liste as ferramentas que serão utilizadas.
 
@@ -184,10 +220,10 @@ Os entregáveis de teste são fornecidos conforme abaixo
 | 1 | JUnit 5 | Framework utilizado para a criação e execução dos testes unitários do sistema |
 | 2 | Mockito | Biblioteca utilizada para simular dependências e facilitar a execução de testes unitários |
 | 3 | Eclipse | Visual Studio Code | Ambiente utilizado para desenvolvimento e execução dos testes |
-| 4 | Computador | Pelo menos 4 computadores rodam Windows 7, Ram 2GB, CPU 3.4GHZ |
+| 4 | Computador | Pelo menos 5 computadores rodam Windows |
 ---
 
-### 💻 8.2 Ambiente de Teste
+### 💻 4.2 Ambiente de Teste
 
 > 📢 **Instrução:** Descreva o ambiente onde os testes serão executados.
 
@@ -202,26 +238,17 @@ Para a execução do sistema e realização dos testes, é necessário dispor de
 - Ambiente de desenvolvimento integrado (IDE), como Eclipse IDE ou IntelliJ IDEA
   
 
----
 
-## ⚠️ 9. Riscos
 
-> 📢 **Instrução:** Identifique possíveis problemas e como lidar com eles.
-
-| Risco | Impacto | Mitigação |
-|------|---------|----------|
-|      |         |          |
-|      |         |          |
-
----
-
-## 📚 10. Termos e Acrônimos
+## 📚 5. Termos e Acrônimos
 
 > 📢 **Instrução:** Defina termos técnicos utilizados no documento.
 
 | Termo | Significado |
 |------|-------------|
-|      |             |
-|      |             |
+| JUnit | Framework para testes unitários em Java |
+| Mockito | Biblioteca para criação de mocks em testes |
+| RF | Requisito Funcional |
+| RF | Requisito não Funcional |
 
 ---
