@@ -8,8 +8,8 @@
 - **Resultado Esperado**: Usuário é capaz de salvar contatos de médico na agenda
 
 ## Resumo do Relatório
-- **Casos Planejados**: 3
-- **Casos Executados**: 3
+- **Casos Planejados**: 4
+- **Casos Executados**: 4
 - **Casos com Problemas**: 0
 - **Eficiência**: 100%
 
@@ -17,6 +17,7 @@
 
 | PASSO | ETAPAS | RESULTADOS ESPERADOS | RESULTADOS REAIS | PASSOU/FALHOU |
 | --- | --- | --- | --- | --- |
-| 1 | Clicar no botão "Contatos dos médicos" | Tela de formulário para preencher dados do médico | A tela de formulário é exibida |  |
-| 2 | Clicar no botão "Novo contato" | Capaz de inserir dados nos campos | Capaz de inserir os dados do médico nos campos |  |
-| 3 | Clicar no botão "Salvar" | O contato do médico é salvo e exibido na agenda | O contato do médico é inserido na agenda |  |
+| 1 | Clicar no botão "Contatos dos médicos" | Tela de formulário para preencher dados do médico | A tela de formulário é exibida | Passou |
+| 2 | Clicar no botão "Novo contato" | Capaz de inserir dados nos campos | Capaz de inserir os dados do médico nos campos | Passou |
+| 3 | Preencher os campos com dados de contato do médico | Os dados preenchidos são exibidos nos campos referentes | Os dados preenchidos são exibidos nos campos referentes | Passou |
+| 4 | Clicar no botão "Salvar" | O contato do médico é salvo e exibido na agenda | O contato do médico é inserido na agenda | Passou |
