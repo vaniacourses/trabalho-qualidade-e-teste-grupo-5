@@ -57,12 +57,9 @@ public class AgendaTest {
 	
 	@Test
 	public void testAdicionarContadoDuplicado() {
-		// Bug: O contato já existe na agenda, e não deveria ser adicionado novamente.
-		
 		agenda.adicionarContato(pessoa);
-		
-		// O tamanho da agenda aumenta, indicando que o contato duplicado foi adicionado
-		assertEquals(4, agenda.getContatos().size());
+
+		assertEquals(3, agenda.getContatos().size());
 	}
 	
 	
@@ -74,10 +71,16 @@ public class AgendaTest {
 	
 	@Test
 	public void testAlterarNomeContatoParaVazio() {
-		// Bug: É permitido alterar o nome de um contato para null
-		
-		assertTrue(agenda.alterarNomeContato("Andre", null));
-		assertEquals(null, medico.getNome());
+		assertFalse(agenda.alterarNomeContato("Andre", null));
+		assertEquals("Andre", medico.getNome());
+	}
+
+	@Test
+	public void testGetContatosAposNomeNull_lancaNullPointerException() {
+		agenda.alterarNomeContato("Andre", null);
+
+		assertDoesNotThrow(() -> agenda.getContatos());
+		assertNotNull(medico.getNome());
 	}
 	
 	
@@ -89,10 +92,8 @@ public class AgendaTest {
 	
 	@Test
 	public void testAlterarTelContatoParaVazio() {
-		// Bug: É permitido alterar o telefone de um contato para null
-		
-		assertTrue(agenda.alterarTelContato("Leonardo", null));
-		assertEquals(null, pessoa.getTelefone());
+		assertFalse(agenda.alterarTelContato("Leonardo", null));
+		assertEquals("21985473573", pessoa.getTelefone());
 	}
 	
 	@Test
@@ -155,16 +156,14 @@ public class AgendaTest {
 	
 	@Test
 	public void testRemoverContatoComNomeIgual() {
-		// Bug: Ao remover um contato que tenha o mesmo nome de outro, o primeiro contato a ser encontrado é removido
-		
 		PessoaFisica pessoa2 = new PessoaFisica("Leonardo", "21985101117", "abc@gmail.com", "3010", "101010", new Endereco("Tavares","516"));
 		agenda.adicionarContato(pessoa2);
-		
-		agenda.removerContato("Leonardo"); // Queremos remover o contato que acabamos de adicionar à agenda
+
+		agenda.removerContato("Leonardo");
+
 		assertEquals(3, agenda.getContatos().size());
-		
-		// Prova de que o contato que queriamos apagar ainda continua na agenda
-		assertEquals("21985101117", agenda.getContatos().get(2).getTelefone());
+		assertTrue(agenda.getContatos().stream()
+				.anyMatch(c -> "21985473573".equals(c.getTelefone())));
 	}
 
 	
@@ -225,11 +224,8 @@ public class AgendaTest {
 
 	@Test
 	public void testStringToAgendaComStringNula() {
-		//Se passarmos null na string, o método tenta fazer null.split("/") e lança NullPointerException
-
-		assertThrows(NullPointerException.class, () -> {
-			Agenda.stringToAgenda(null, "123", "usuario", true, true);
-		});
+		assertThrows(IllegalArgumentException.class, () ->
+				Agenda.stringToAgenda(null, "123", "usuario", true, true));
 	}
 
 }

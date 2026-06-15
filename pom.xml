@@ -16,6 +16,8 @@
 
         <junit.version>5.10.2</junit.version>
         <mockito.version>5.11.0</mockito.version>
+        <jacoco.version>0.8.12</jacoco.version>
+        <pitest.version>1.17.0</pitest.version>
     </properties>
 
     <dependencies>
@@ -63,6 +65,51 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <configuration>
+                    <targetClasses>
+                        <param>backend.usuario.Uso</param>
+                        <param>backend.gerenciamento.Data</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>backend.usuario.UsoTest</param>
+                        <param>backend.gerenciamento.DataTest</param>
+                    </targetTests>
+                    <mutationThreshold>80</mutationThreshold>
+                    <coverageThreshold>80</coverageThreshold>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

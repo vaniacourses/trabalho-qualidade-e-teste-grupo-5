@@ -1,17 +1,28 @@
 package backend.usuario;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import backend.Endereco;
+import backend.FuncoesArquivos;
 import backend.Medicamento;
 
 class PessoaFisicaTest {
@@ -22,7 +33,8 @@ class PessoaFisicaTest {
 
         String nomeArquivo = pessoa.getNomeArquivoUsos();
 
-        assertEquals("backend\\usuario\\arquivosUsosUsuarios\\Uso12345678900.txt", nomeArquivo);
+        assertTrue(nomeArquivo.endsWith("Uso12345678900.txt"));
+        assertTrue(nomeArquivo.contains("arquivosUsosUsuarios"));
     }
 
     @Test
@@ -59,13 +71,24 @@ class PessoaFisicaTest {
     }
 
     @Test
+    void toString_deveUsarSeparadorPortatilNoNomeDoArquivo() {
+        PessoaFisica pessoa = novaPessoaBase();
+        pessoa.setListaUsoMedicamentos(new ArrayList<>(List.of(novoUso("Paracetamol"))), false);
+
+        String pessoaString = pessoa.toString();
+
+        assertFalse(pessoaString.contains("backend\\usuario\\"));
+    }
+
+    @Test
     void toString_deveConterNomeArquivoUsosQuandoListaExistir() {
         PessoaFisica pessoa = novaPessoaBase();
         pessoa.setListaUsoMedicamentos(new ArrayList<>(List.of(novoUso("Paracetamol"))), false);
 
         String pessoaString = pessoa.toString();
 
-        assertTrue(pessoaString.contains("backend\\usuario\\arquivosUsosUsuarios\\Uso12345678900.txt"));
+        assertTrue(pessoaString.contains("Uso12345678900.txt"));
+        assertTrue(pessoaString.contains("arquivosUsosUsuarios"));
     }
 
     @Test
@@ -117,6 +140,132 @@ class PessoaFisicaTest {
         List<Uso> listaUsos = PessoaFisica.resgatarListaUsoMedicamentosArquivo("arquivo-que-nao-existe-123.txt");
 
         assertTrue(listaUsos.isEmpty());
+    }
+
+    @Test
+    void adicionarUsoNaListaUsoMedicamentos_deveCriarListaQuandoNula() {
+        PessoaFisica pessoa = novaPessoaBase();
+        Uso novoUso = novoUso("Vitamina D");
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            pessoa.adicionarUsoNaListaUsoMedicamentos(novoUso);
+
+            assertNotNull(pessoa.getListaUsoMedicamentos());
+            assertEquals(1, pessoa.getListaUsoMedicamentos().size());
+            mockArquivos.verify(() -> FuncoesArquivos.salvarListaEmArquivo(anyString(), anyList(), eq(false)));
+        }
+    }
+
+    @Test
+    void removerUsoNaListaUsoMedicamentos_deveRemoverMedicamentoCorreto() {
+        PessoaFisica pessoa = novaPessoaBase();
+        pessoa.setListaUsoMedicamentos(
+                new ArrayList<>(Arrays.asList(novoUso("Dipirona"), novoUso("Paracetamol"))),
+                false);
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            pessoa.removerUsoNaListaUsoMedicamentos("Dipirona");
+
+            assertEquals(1, pessoa.getListaUsoMedicamentos().size());
+            assertEquals("Paracetamol", pessoa.getListaUsoMedicamentos().get(0).getRemedio().getNome());
+            mockArquivos.verify(() -> FuncoesArquivos.salvarListaEmArquivo(anyString(), anyList(), eq(false)));
+        }
+    }
+
+    @Test
+    void removerUsoNaListaUsoMedicamentos_naoDeveFalharQuandoListaNula() {
+        PessoaFisica pessoa = novaPessoaBase();
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            pessoa.removerUsoNaListaUsoMedicamentos("Qualquer");
+
+            assertNull(pessoa.getListaUsoMedicamentos());
+            mockArquivos.verify(() -> FuncoesArquivos.salvarListaEmArquivo(anyString(), anyList(), anyBoolean()), never());
+        }
+    }
+
+    @Test
+    void atualizarQntRemediosListaUsoMedicamentos_deveAtualizarQuantidade() {
+        PessoaFisica pessoa = novaPessoaBase();
+        pessoa.setListaUsoMedicamentos(new ArrayList<>(List.of(novoUso("Dipirona"))), false);
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            pessoa.atualizarQntRemediosListaUsoMedicamentos("Dipirona", 5);
+
+            assertEquals(5, pessoa.getUsoListaUsoMedicamentos("Dipirona").getQtdDisponivel());
+            mockArquivos.verify(() -> FuncoesArquivos.salvarListaEmArquivo(anyString(), anyList(), eq(false)));
+        }
+    }
+
+    @Test
+    void atualizarQntRemediosListaUsoMedicamentos_comListaNula_deveLancarExcecao() {
+        PessoaFisica pessoa = novaPessoaBase();
+
+        assertThrows(IllegalStateException.class,
+                () -> pessoa.atualizarQntRemediosListaUsoMedicamentos("Dipirona", 10));
+    }
+
+    @Test
+    void salvarDadosArquivo_deveInserirQuandoUsuarioNaoExiste() {
+        PessoaFisica pessoa = novaPessoaBase();
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            mockArquivos.when(() -> FuncoesArquivos.checarExistenciaNomeArquivo(anyString(), eq("Fulano")))
+                    .thenReturn(false);
+
+            pessoa.salvarDadosArquivo();
+
+            mockArquivos.verify(() -> FuncoesArquivos.appendLinhaArquivo(anyString(), anyString()));
+            mockArquivos.verify(() -> FuncoesArquivos.alterarLinhaArquivo(anyString(), anyString(), anyString()), never());
+        }
+    }
+
+    @Test
+    void salvarDadosArquivo_deveAtualizarQuandoUsuarioJaExiste() {
+        PessoaFisica pessoa = novaPessoaBase();
+
+        try (MockedStatic<FuncoesArquivos> mockArquivos = mockStatic(FuncoesArquivos.class)) {
+            mockArquivos.when(() -> FuncoesArquivos.checarExistenciaNomeArquivo(anyString(), eq("Fulano")))
+                    .thenReturn(true);
+
+            pessoa.salvarDadosArquivo();
+
+            mockArquivos.verify(() -> FuncoesArquivos.alterarLinhaArquivo(anyString(), eq("Fulano"), anyString()));
+            mockArquivos.verify(() -> FuncoesArquivos.appendLinhaArquivo(anyString(), anyString()), never());
+        }
+    }
+
+    @Test
+    void salvarArquivoUsos_listaNula_naoDeveLancarExcecao() {
+        PessoaFisica pessoa = novaPessoaBase();
+        assertDoesNotThrow(() -> pessoa.salvarArquivoUsos());
+    }
+
+    @Test
+    void toString_enderecoNulo_naoDeveLancarExcecao() {
+        PessoaFisica pessoa = novaPessoaBase();
+        pessoa.setEndereco(null);
+        assertDoesNotThrow(() -> pessoa.toString());
+    }
+
+    @Test
+    void removerUsoNaLista_mesmoNomeRemoveUsoCorreto() {
+        PessoaFisica pessoa = novaPessoaBase();
+        Uso usoManha = novoUso("Dipirona");
+        usoManha.setDose(1);
+        Uso usoNoite = novoUso("Dipirona");
+        usoNoite.setDose(2);
+        pessoa.setListaUsoMedicamentos(new ArrayList<>(Arrays.asList(usoManha, usoNoite)), false);
+
+        pessoa.removerUsoNaListaUsoMedicamentos("Dipirona");
+
+        assertEquals(1, pessoa.getListaUsoMedicamentos().size());
+        assertEquals(1, pessoa.getListaUsoMedicamentos().get(0).getDose());
+    }
+
+    @Test
+    void getNomeArquivoUsos_deveUsarSeparadorDoSistema() {
+        assertFalse(novaPessoaBase().getNomeArquivoUsos().contains("\\"));
     }
 
     private PessoaFisica novaPessoaBase() {
