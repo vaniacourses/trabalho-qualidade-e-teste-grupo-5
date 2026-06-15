@@ -1,6 +1,5 @@
 .DS_Store
 session*.md
-target/
 *.class
 .vscode/
 .idea/
@@ -9,3 +8,29 @@ target/
 .project
 .classpath
 bin/
+
+# --- Maven: compilação e saída de testes ---
+target/
+
+# Relatórios de teste / cobertura / mutação (também ficam em target/, listados por clareza)
+target/surefire-reports/
+target/site/jacoco/
+target/pit-reports/
+target/maven-status/
+target/generated-test-sources/
+target/test-classes/
+target/classes/
+
+# Arquivos de cobertura fora do diretório padrão
+jacoco.exec
+*.exec
+
+# --- Artefatos temporários gerados pelos testes ---
+# FuncoesArquivos.alterarLinhaArquivo / alterarInfoArquivo
+temp.txt
+
+# Dados gerados na raiz pelos testes de persistência (caminhos legados com separador Windows).
+# Usar / no início para NÃO ignorar src/main/java/backend nem src/test/java/backend.
+/backend/
+# No macOS/Linux o legado grava um único caminho com "\" no nome do arquivo:
+backend\\*

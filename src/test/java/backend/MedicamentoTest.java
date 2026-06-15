@@ -2,6 +2,7 @@ package backend;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -135,18 +136,12 @@ public class MedicamentoTest {
 
     @Test
     public void testSetNomeNull() {
-        // Bug: É permitido definir um nome null para o medicamento
-
-        medicamento1.setNome(null);
-        assertNull(medicamento1.getNome());
+        assertThrows(IllegalArgumentException.class, () -> medicamento1.setNome(null));
     }
 
     @Test
     public void testSetNomeVazio() {
-        // Bug: É permitido definir um nome vazio para o medicamento
-
-        medicamento1.setNome("");
-        assertEquals("", medicamento1.getNome());
+        assertThrows(IllegalArgumentException.class, () -> medicamento1.setNome(""));
     }
 
     @Test
@@ -157,10 +152,7 @@ public class MedicamentoTest {
 
     @Test
     public void testSetPrecoNegativo() {
-        // Bug: É permitido definir um preço negativo para o medicamento
-
-        medicamento1.setPreco(-10.00f);
-        assertEquals(-10.00f, medicamento1.getPreco());
+        assertThrows(IllegalArgumentException.class, () -> medicamento1.setPreco(-10.00f));
     }
 
     @Test
@@ -232,9 +224,7 @@ public class MedicamentoTest {
 
     @Test
     public void testCompareToMedicamentoNull() {
-        // Bug: Ao comparar com um medicamento null, o sistema lança NullPointerException
-
-        assertThrows(NullPointerException.class, () -> medicamento1.compareTo(null));
+        assertDoesNotThrow(() -> medicamento1.compareTo(null));
     }
 
     @Test
