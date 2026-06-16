@@ -5,10 +5,14 @@ import backend.Pessoa;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Medico extends Pessoa {
+    private static final Logger LOGGER = Logger.getLogger(Medico.class.getName());
     public static final String nomeArquivoMedicos = "backend\\usuario\\RegistroMedicos.txt";
     private String especialidade;
 
@@ -40,9 +44,7 @@ public class Medico extends Pessoa {
 
     @Override
     public String toString(){
-        String medicoString = PessoaToString() + "," + this.getEspecialidade();
-        return medicoString;
-
+        return PessoaToString() + "," + this.getEspecialidade();
     }   
 
     public void salvarDadosArquivo(){
@@ -52,9 +54,8 @@ public class Medico extends Pessoa {
     }
 
     public static Medico resgatarMedicoArquivo(String emailFornecido, String senhaFornecida, boolean ignorarSenha){
-        try{
-            FileReader fr = new FileReader(nomeArquivoMedicos);
-            BufferedReader br = new BufferedReader(fr);
+        try (FileReader fr = new FileReader(nomeArquivoMedicos);
+             BufferedReader br = new BufferedReader(fr)){
 
             String linha = br.readLine();
 
@@ -63,23 +64,19 @@ public class Medico extends Pessoa {
                 String email = dadosLinha[2];
                 String senha = dadosLinha[3];
 
-                if (email.equals(emailFornecido) && (ignorarSenha == true || senhaFornecida.equals(senha))){
+                if (email.equals(emailFornecido) && (ignorarSenha || senhaFornecida.equals(senha))){
                     String telefone = dadosLinha[1];
                     String nome = dadosLinha[0];
                     String especialidade = dadosLinha[4];
-                    Medico medico = new Medico(nome, telefone, email, senha, especialidade);
-                    br.close();
-                    return medico;
+                    return new Medico(nome, telefone, email, senha, especialidade);
                 }
                 linha = br.readLine();
             }
-            System.out.println("medico n foi encontrado no arquivo");
-            br.close();
+            LOGGER.info("medico n foi encontrado no arquivo");
             return null;
         }
-        catch (Exception e){
-            System.out.println("n foi possivel resgatar o medico");
-            e.printStackTrace();
+        catch (IOException e){
+            LOGGER.log(Level.SEVERE, "n foi possivel resgatar o medico", e);
             return null;
         }
     }

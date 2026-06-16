@@ -32,8 +32,7 @@ public class ItemEstoque {
 
     @Override
     public String toString(){
-        String itemEstoqueString = this.getMedicamento().toString() + "," + String.valueOf(this.getQntMedicamento());
-        return itemEstoqueString;
+        return this.getMedicamento().toString() + "," + this.getQntMedicamento();
     }
 
     public static ItemEstoque stringToItemEstoque(String itemEstoqueString){
@@ -48,8 +47,6 @@ public class ItemEstoque {
                                     tipoMedicamento, condicoesMedicamento, restricaoMedicamento);
         
         int qnt = Integer.parseInt(dadosItemEstoque[6]);
-        ItemEstoque itemEstoque = new ItemEstoque(medicamento, qnt);
-        return itemEstoque;
-
+        return new ItemEstoque(medicamento, qnt);
     }
 }

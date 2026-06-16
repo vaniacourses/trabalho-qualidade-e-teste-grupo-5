@@ -1,22 +1,26 @@
 package backend.farmacia;
 
 import backend.Pessoa;
-import backend.farmacia.Estoque;
 import backend.usuario.PessoaFisica;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import backend.Agenda;
-import backend.Autenticacao;
 import backend.Endereco;
 import backend.FuncoesArquivos;
 import backend.Medicamento;
 
 public class PessoaJuridica extends Pessoa{
 
+    private static final Logger LOGGER = Logger.getLogger(PessoaJuridica.class.getName());
     public static final String nomeArquivoFarmacias = "backend\\farmacia\\RegistroFarmacias.txt";
     
     private String cnpj;
@@ -36,7 +40,7 @@ public class PessoaJuridica extends Pessoa{
 
     public void setCnpj(String novoCnpj, boolean modificarArquivo){
         this.cnpj = novoCnpj;
-        if (modificarArquivo == true){
+        if (modificarArquivo){
             FuncoesArquivos.alterarInfoArquivo(nomeArquivoFarmacias, this.getNome(), 4, novoCnpj);
         }
     }
@@ -47,7 +51,7 @@ public class PessoaJuridica extends Pessoa{
 
     public void setEndereco(Endereco novoEndereco, boolean modificarArquivo){
         this.endereco = novoEndereco;
-        if (modificarArquivo == true){
+        if (modificarArquivo){
             FuncoesArquivos.alterarInfoArquivo(nomeArquivoFarmacias, this.getNome(), 5, novoEndereco.toString());
         }
     }
@@ -69,7 +73,7 @@ public class PessoaJuridica extends Pessoa{
 
     public void setContatosClientes(Agenda novaAgenda, boolean modificarArquivo){
         this.contatosClientes = novaAgenda;
-        if (modificarArquivo == true){
+        if (modificarArquivo){
             FuncoesArquivos.alterarInfoArquivo(nomeArquivoFarmacias, this.getNome(), 7, this.getContatosClientes().toString());
         }
     }
@@ -104,7 +108,7 @@ public class PessoaJuridica extends Pessoa{
 
         String farmaciaString = this.PessoaToString();
 
-        ArrayList<String> listaValoresAtributos = new ArrayList<String>();
+        ArrayList<String> listaValoresAtributos = new ArrayList<>();
         
         if (this.getCnpj() != null){
             listaValoresAtributos.add(this.getCnpj());
@@ -117,8 +121,7 @@ public class PessoaJuridica extends Pessoa{
             listaValoresAtributos.add(this.getEndereco().toString());
         }
         else{
-            String enderecoNull = "null";
-            listaValoresAtributos.add(enderecoNull);
+            listaValoresAtributos.add("null");
         }
 
         if (this.getEstoque() != null){
@@ -156,22 +159,18 @@ public class PessoaJuridica extends Pessoa{
     }
 
     public void salvarEstoqueArquivo(){
-        try{
-            String nomeArquivoEstoque = getNomeArquivoEstoque();
-            FileWriter fw = new FileWriter(nomeArquivoEstoque);
-            BufferedWriter bw = new BufferedWriter(fw); 
-            
+        String nomeArquivoEstoque = getNomeArquivoEstoque();
+        try (FileWriter fw = new FileWriter(nomeArquivoEstoque);
+             BufferedWriter bw = new BufferedWriter(fw)){
+
             Estoque estoqueTemp = this.getEstoque();
             for (ItemEstoque itemEstoque : estoqueTemp.listaEstoque){
-                String linha = itemEstoque.toString();
-                bw.write(linha);
+                bw.write(itemEstoque.toString());
                 bw.newLine();
             }
-            bw.close();
         }
         catch(IOException e){
-            System.out.println("erro nao foi possivel salvar no arquivo");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "erro nao foi possivel salvar no arquivo", e);
         }
     }
 
@@ -216,9 +215,8 @@ public class PessoaJuridica extends Pessoa{
     }
     
     public static Estoque resgatarEstoqueArquivo(String nomeArquivoEstoque){
-        try{
-            FileReader fr = new FileReader(nomeArquivoEstoque);
-            BufferedReader br = new BufferedReader(fr);
+        try (FileReader fr = new FileReader(nomeArquivoEstoque);
+             BufferedReader br = new BufferedReader(fr)){
 
             Estoque estoque = new Estoque();
 
@@ -229,21 +227,18 @@ public class PessoaJuridica extends Pessoa{
                 estoque.addMedicamentoEstoque(itemEstoque);
                 linha = br.readLine();
             }
-            System.out.println("estoque recuperado com sucesso!");
-            br.close();
+            LOGGER.info("estoque recuperado com sucesso!");
             return estoque;
         }
         catch (IOException e){
-            System.out.println("erro, não é possível recuperar o estoque");
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "erro, não é possível recuperar o estoque", e);
             return null;
         }
     }
 
     public static PessoaJuridica resgatarFarmaciaArquivo(String emailFarmacia, String senhaFornecida, Boolean ignorarSenha, Boolean ignorarAgenda){
-        try{
-            FileReader fr = new FileReader(nomeArquivoFarmacias);
-            BufferedReader br = new BufferedReader(fr);
+        try (FileReader fr = new FileReader(nomeArquivoFarmacias);
+             BufferedReader br = new BufferedReader(fr)){
             String linha = br.readLine();
 
             while (linha != null){
@@ -251,7 +246,7 @@ public class PessoaJuridica extends Pessoa{
                 String email = dadosLinha[2];
                 String senha = dadosLinha[3];
 
-                if (email.equals(emailFarmacia) && (ignorarSenha == true || senha.equals(senhaFornecida))){
+                if (email.equals(emailFarmacia) && (ignorarSenha || senha.equals(senhaFornecida))){
                     String telefone = dadosLinha[1];
                     String nome = dadosLinha[0];
                     String cnpj = dadosLinha[4];
@@ -265,23 +260,20 @@ public class PessoaJuridica extends Pessoa{
                         farmacia.setEstoque(estoque, false);
                     }
 
-                    if (!dadosLinha[7].equals("null") && ignorarAgenda == false){
+                    if (!dadosLinha[7].equals("null") && !ignorarAgenda){
                         Agenda agenda = Agenda.stringToAgenda(dadosLinha[7], senha, "usuario", true, true);
                         farmacia.setContatosClientes(agenda, false);
                     }
-                    br.close();
                     return farmacia;
                 }
-                
+
                 linha = br.readLine();
             }
-            System.out.println("erro, n foi possivel resgatar uma farmacia com esse nome");
-            br.close();
+            LOGGER.info("erro, n foi possivel resgatar uma farmacia com esse nome");
             return null;
         }
-        catch(Exception e){
-            System.out.println("Erro, n foi possivel recuperar a farmacia do arquivo");
-            e.printStackTrace();
+        catch(IOException e){
+            LOGGER.log(Level.SEVERE, "Erro, n foi possivel recuperar a farmacia do arquivo", e);
             return null;
         }
     }

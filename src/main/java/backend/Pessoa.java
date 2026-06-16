@@ -1,13 +1,20 @@
 package backend;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //pessoa no sentido de pessoa fisica ou pessoa juridica
 public abstract class Pessoa implements Comparable<Pessoa>, Serializable {
+    private static final Logger LOGGER = Logger.getLogger(Pessoa.class.getName());
     private String nome; // nome da pessoa ou razao social
     private String telefone;
     private String email;
@@ -74,68 +81,60 @@ public abstract class Pessoa implements Comparable<Pessoa>, Serializable {
     }
 
     public String PessoaToString() {
-        ArrayList<String> listaValoresAtributos = new ArrayList<String>();
+        ArrayList<String> listaValoresAtributos = new ArrayList<>();
 
         listaValoresAtributos.add(this.getNome());
         listaValoresAtributos.add(this.getTelefone());
         listaValoresAtributos.add(this.getEmail());
         listaValoresAtributos.add(this.getSenha());
-        
-        String pessoaString = String.join(",", listaValoresAtributos);
-        return pessoaString;
+
+        return String.join(",", listaValoresAtributos);
     }
 
     public String PessoaToString(Boolean botarSenhaEncriptada) {
-        ArrayList<String> listaValoresAtributos = new ArrayList<String>();
+        ArrayList<String> listaValoresAtributos = new ArrayList<>();
 
         listaValoresAtributos.add(this.getNome());
         listaValoresAtributos.add(this.getTelefone());
         listaValoresAtributos.add(this.getEmail());
         String senhaEncriptada = "";
-        
-        if (botarSenhaEncriptada == true){
+
+        if (botarSenhaEncriptada){
             try {
                 senhaEncriptada = Autenticacao.encriptarSenha(this.getEmail(), this.getSenha());
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "Falha ao encriptar a senha", e);
             }
             listaValoresAtributos.add(senhaEncriptada);
         }
         else{
             listaValoresAtributos.add(this.getSenha());
         }
-        
-        String pessoaString = String.join(",", listaValoresAtributos);
-        return pessoaString;
+
+        return String.join(",", listaValoresAtributos);
     }
 
     // função para gravar objeto no arquivo
     public void salvarObjetoArquivo(String nomeArquivo, Object objeto){
-        try{
-            FileOutputStream arquivo = new FileOutputStream(nomeArquivo);
-            ObjectOutputStream objetoOut = new ObjectOutputStream(arquivo);
+        try (FileOutputStream arquivo = new FileOutputStream(nomeArquivo);
+             ObjectOutputStream objetoOut = new ObjectOutputStream(arquivo)){
             objetoOut.writeObject(objeto);
-            objetoOut.close();
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(IOException e){
+            LOGGER.log(Level.SEVERE, "Falha ao salvar objeto no arquivo " + nomeArquivo, e);
         }
     }
 
     //função para resgatar objeto do arquivo
     public Object recuperarObjetoArquivo(String nomeArquivo){
-        try{
-            FileInputStream arquivo = new FileInputStream(nomeArquivo);
-            ObjectInputStream objetoIn = new ObjectInputStream(arquivo);
-            Object objeto = objetoIn.readObject();
-            objetoIn.close();
-            return objeto;
+        try (FileInputStream arquivo = new FileInputStream(nomeArquivo);
+             ObjectInputStream objetoIn = new ObjectInputStream(arquivo)){
+            return objetoIn.readObject();
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (IOException | ClassNotFoundException e){
+            LOGGER.log(Level.SEVERE, "Falha ao recuperar objeto do arquivo " + nomeArquivo, e);
             return null;
         }
-        
     }
 
 }
