@@ -36,16 +36,41 @@ import backend.usuario.PessoaFisica;
 
 final class FrontendTestSupport {
 
+    /** Pausa entre passos em testes E2E executados localmente para visualizar a interface. */
+    static final long PAUSA_VISUAL_MS = 500;
+
     private FrontendTestSupport() {
     }
 
     static void instalarAssertjSwing() {
+        if (assertjSwingInstalado) {
+            return;
+        }
         FailOnThreadViolationRepaintManager.install();
+        aquecerInterfaceGrafica();
+        assertjSwingInstalado = true;
     }
+
+    /** Inicializa AWT/Swing antes dos testes para evitar cold start nos cronômetros. */
+    static void aquecerInterfaceGrafica() {
+        GuiActionRunner.execute(() -> {
+            javax.swing.JFrame aquecimento = new javax.swing.JFrame();
+            aquecimento.setSize(1, 1);
+            aquecimento.setVisible(true);
+            aquecimento.dispose();
+
+            Inicio menu = new Inicio();
+            menu.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            menu.dispose();
+        });
+    }
+
+    private static boolean assertjSwingInstalado;
 
     static Robot criarRobot() {
         Robot robot = BasicRobot.robotWithNewAwtHierarchy();
-        robot.settings().delayBetweenEvents(400);
+        robot.settings().delayBetweenEvents(0);
+        robot.settings().timeoutToBeVisible(2_000);
         return robot;
     }
 
@@ -61,13 +86,17 @@ final class FrontendTestSupport {
     }
 
     static void encerrar(Robot robot, FrameFixture... telas) {
+        fecharTelas(telas);
+        if (robot != null) {
+            robot.cleanUp();
+        }
+    }
+
+    static void fecharTelas(FrameFixture... telas) {
         for (FrameFixture tela : telas) {
             if (tela != null) {
                 tela.cleanUp();
             }
-        }
-        if (robot != null) {
-            robot.cleanUp();
         }
     }
 

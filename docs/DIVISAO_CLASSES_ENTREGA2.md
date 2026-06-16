@@ -61,7 +61,7 @@ Este documento sugere **uma classe por integrante** para cumprir os itens da Ent
 - [x] Testes estruturais cobrindo todos os `case` de `formatarDia` e ramos de `verificarHora` / `verificarDia`.
 - [x] **≥ 80% branches** em `Data`.
 - [x] **≥ 80% mutation score** no PIT.
-- [ ] Print Sonar antes/depois.
+- [x] Print Sonar antes/depois.
 
 **Ramos prioritários:** segunda chamada de `verificarHora`, entrada inválida em `formatarDia`, `verificarDia(null)`.
 

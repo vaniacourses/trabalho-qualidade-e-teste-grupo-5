@@ -13,11 +13,9 @@ import javax.swing.JPasswordField;
 import javax.swing.text.JTextComponent;
 import javax.swing.WindowConstants;
 
-import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.core.Robot;
 import org.assertj.swing.core.matcher.JLabelMatcher;
-import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiTask;
 import org.assertj.swing.fixture.FrameFixture;
@@ -37,8 +35,6 @@ import backend.usuario.PessoaFisica;
  */
 class InicioE2ETest {
 
-    /** Aumente ou reduza (ms) para ver o fluxo com calma ao rodar localmente. */
-    private static final long PAUSA_VISUAL_MS = 3_000;
 
     private static final String EMAIL_VALIDO = "teste@e2e.com";
     private static final String SENHA_VALIDA = "senha123";
@@ -49,15 +45,14 @@ class InicioE2ETest {
 
     @BeforeAll
     static void configurarAssertjSwing() {
-        FailOnThreadViolationRepaintManager.install();
+        FrontendTestSupport.instalarAssertjSwing();
     }
 
     @BeforeEach
     void abrirMenuInicial() throws IOException {
         prepararUsuarioDeTeste();
 
-        robot = BasicRobot.robotWithNewAwtHierarchy();
-        robot.settings().delayBetweenEvents(400);
+        robot = FrontendTestSupport.criarRobot();
         Inicio telaInicio = GuiActionRunner.execute(() -> {
             Inicio frame = new Inicio();
             frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -80,7 +75,7 @@ class InicioE2ETest {
 
     @Test
     void fluxoMenuInicialParaLoginPessoa_deveAutenticarComEmailESenhaValidos() {
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
 
         JLabel labelLogin = robot.finder().find(
                 menu.target(), JLabelMatcher.withText("Fazer login como pessoa."));
@@ -95,7 +90,7 @@ class InicioE2ETest {
             throw new IllegalStateException("Botão Iniciar não encontrado ao lado do label de login");
         });
 
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
 
         GuiActionRunner.execute(new GuiTask() {
             @Override
@@ -106,7 +101,7 @@ class InicioE2ETest {
         robot.waitForIdle();
 
         FrameFixture telaLogin = WindowFinder.findFrame(EntrarPessoa.class).using(robot);
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
 
         EntrarPessoa login = (EntrarPessoa) telaLogin.target();
         digitarTextoVisivel(new JTextComponentFixture(robot, login.emailEntradaE), EMAIL_VALIDO);
@@ -119,7 +114,7 @@ class InicioE2ETest {
         });
         digitarTextoVisivel(new JTextComponentFixture(robot, campoSenha), SENHA_VALIDA);
 
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
 
         JButton botaoProx = robot.finder().find(login, withText("Prox."));
         GuiActionRunner.execute(new GuiTask() {
@@ -142,10 +137,10 @@ class InicioE2ETest {
         });
 
         FrameFixture home = new FrameFixture(robot, telaHome);
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
         home.button(withText("Meus remédios")).requireVisible();
         home.label(JLabelMatcher.withText("E2E User")).requireVisible();
-        Pause.pause(PAUSA_VISUAL_MS);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
     }
 
     private static void prepararUsuarioDeTeste() throws IOException {
@@ -164,14 +159,14 @@ class InicioE2ETest {
             componente.requestFocusInWindow();
         });
         robot.waitForIdle();
-        Pause.pause(300);
+        Pause.pause(FrontendTestSupport.PAUSA_VISUAL_MS);
 
         for (char caractere : texto.toCharArray()) {
             GuiActionRunner.execute(() -> {
                 JTextComponent componente = (JTextComponent) campo.target();
                 componente.setText(componente.getText() + caractere);
             });
-            Pause.pause(150);
+            Pause.pause(50);
         }
 
         campo.requireText(texto);
