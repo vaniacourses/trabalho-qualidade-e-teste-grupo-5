@@ -8,11 +8,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.lang.reflect.Field;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DataTest {
+
+    @BeforeEach
+    void resetarEstado() throws Exception {
+        resetarUltimaVerificacao(0);
+    }
 
     // ----------------------------
     // horaDoRemedio()
@@ -30,10 +37,7 @@ class DataTest {
 
     @Test
     void horaDoRemedioDeveRetornarFalseQuandoHoraNaoBate() {
-
-        int horaAtual =
-            Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int horaErrada = (horaAtual + 1) % 24;
         Uso uso = novoUsoComDia(diaDaSemanaAtual());
 
@@ -43,53 +47,29 @@ class DataTest {
     @Test
     void horaDoRemedioDeveRetornarFalseQuandoDiaNaoBate() {
         int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        Uso uso = novoUsoComDia(diaDiferenteDeHoje());
 
-        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2) {
-            Uso uso = novoUsoComDia("seg");
-            assertFalse(Data.horaDoRemedio(uso, horaAtual));
-        }
+        assertFalse(Data.horaDoRemedio(uso, horaAtual));
     }
 
-    private void resetarUltimaVerificacao(int valor) throws Exception {
-        Field field = Data.class.getDeclaredField("ultimaVerficacaoHorario");
-        field.setAccessible(true);
-        field.setInt(null, valor);
+    @Test
+    void horaDoRemedio_deveRetornarFalseQuandoHoraJaFoiVerificada() throws Exception {
+        resetarUltimaVerificacao(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+
+        Uso uso = novoUsoComDia(diaDaSemanaAtual());
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        assertFalse(Data.horaDoRemedio(uso, horaAtual));
     }
 
-    private String diaDaSemanaAtual() {
-        return switch (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
-            case 2 -> "seg";
-            case 3 -> "ter";
-            case 4 -> "qua";
-            case 5 -> "qui";
-            case 6 -> "sex";
-            case 7 -> "sab";
-            default -> "dom";
-        };
-    }
-
-    private Uso novoUsoComDia(String dia) {
-        return new Uso(
-                new Medicamento("Dipirona"),
-                1,
-                new ArrayList<>(Arrays.asList(dia)),
-                5,
-                10,
-                8,
-                12);
-    }
-    
     // ----------------------------
     // ehMeiaNoite()
     // ----------------------------
 
     @Test
     void ehMeiaNoiteDeveRefletirHorarioSistema() {
-
         boolean resultado = Data.ehMeiaNoite();
-
-        int horaAtual =
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
         assertEquals(horaAtual == 0, resultado);
     }
@@ -107,16 +87,28 @@ class DataTest {
 
     @Test
     void deveRetornarFalseQuandoHoraNaoCorresponde() {
-
-        int horaAtual =
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int horaDiferente = (horaAtual + 1) % 24;
 
         assertFalse(Data.verificarHora(horaDiferente));
     }
 
-    
+    @Test
+    void verificarHora_deveRetornarFalseQuandoHoraJaVerificada() throws Exception {
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        resetarUltimaVerificacao(horaAtual);
+        assertFalse(Data.verificarHora(horaAtual));
+    }
+
+    @Test
+    void verificarHora_mesmaHoraNaSegundaChamada_deveRetornarFalse() throws Exception {
+        resetarUltimaVerificacao(-1);
+        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        assertTrue(Data.verificarHora(horaAtual));
+        assertFalse(Data.verificarHora(horaAtual));
+    }
+
     // ----------------------------
     // verificarUltimaVerificacao()
     // ----------------------------
@@ -134,30 +126,9 @@ class DataTest {
     }
 
     @Test
-    void horaDoRemedio_deveRetornarFalseQuandoHoraJaFoiVerificada() throws Exception {
-        resetarUltimaVerificacao(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-
-        String hoje = diaDaSemanaAtual();
-        Uso uso = novoUsoComDia(hoje);
-
-        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        assertFalse(Data.horaDoRemedio(uso, horaAtual));
-    }
-
-    @Test
-    void verificarHora_deveRetornarFalseQuandoHoraJaVerificada() throws Exception {
-        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        resetarUltimaVerificacao(horaAtual);
-        assertFalse(Data.verificarHora(horaAtual));
-    }
-
-    @Test
-    void verificarHora_mesmaHoraNaSegundaChamada_deveRetornarFalse() throws Exception {
-        resetarUltimaVerificacao(-1);
-        int horaAtual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-
-        assertTrue(Data.verificarHora(horaAtual));
-        assertFalse(Data.verificarHora(horaAtual));
+    void devePermitirHorarioDiferenteDoUltimoVerificado() throws Exception {
+        resetarUltimaVerificacao(10);
+        assertTrue(Data.verificarUltimaVerificacao(11));
     }
 
     // ----------------------------
@@ -195,13 +166,15 @@ class DataTest {
     }
 
     @Test
-    void deveFormatarDomingoComoDefault() {
+    void deveFormatarDomingoCorretamente() {
         assertEquals(1, Data.formatarDia("dom"));
     }
 
     @Test
     void entradaInvalida_deveSerRejeitadaEmFormatarDia() {
-        assertNotEquals(1, Data.formatarDia("segunda"));
+        assertEquals(0, Data.formatarDia("segunda"));
+        assertEquals(0, Data.formatarDia(""));
+        assertEquals(0, Data.formatarDia("invalido"));
     }
 
     // ----------------------------
@@ -210,39 +183,14 @@ class DataTest {
 
     @Test
     void deveRetornarTrueQuandoHojeEstaNaLista() {
-
-        Calendar c = Calendar.getInstance();
-        int hoje = c.get(Calendar.DAY_OF_WEEK);
-
-        String diaHoje;
-
-        switch (hoje) {
-            case 2: diaHoje = "seg"; break;
-            case 3: diaHoje = "ter"; break;
-            case 4: diaHoje = "qua"; break;
-            case 5: diaHoje = "qui"; break;
-            case 6: diaHoje = "sex"; break;
-            case 7: diaHoje = "sab"; break;
-            default: diaHoje = "dom";
-        }
-
-        ArrayList<String> dias =
-                new ArrayList<>(Arrays.asList(diaHoje));
-
+        ArrayList<String> dias = new ArrayList<>(Arrays.asList(diaDaSemanaAtual()));
         assertTrue(Data.verificarDia(dias));
     }
 
     @Test
     void deveRetornarFalseQuandoHojeNaoEstaNaLista() {
-
-        ArrayList<String> dias =
-                new ArrayList<>(Arrays.asList("seg"));
-
-        Calendar c = Calendar.getInstance();
-
-        if (c.get(Calendar.DAY_OF_WEEK) != 2) {
-            assertFalse(Data.verificarDia(dias));
-        }
+        ArrayList<String> dias = new ArrayList<>(Arrays.asList(diaDiferenteDeHoje()));
+        assertFalse(Data.verificarDia(dias));
     }
 
     @Test
@@ -251,11 +199,60 @@ class DataTest {
     }
 
     @Test
-    void verificarDia_diaInvalidoNoDomingo_deveRetornarFalse() {
-        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 1) {
-            ArrayList<String> dias = new ArrayList<>(Arrays.asList("segunda"));
-            assertFalse(Data.verificarDia(dias));
-        }
+    void verificarDia_listaVazia_deveRetornarFalse() {
+        assertFalse(Data.verificarDia(new ArrayList<>()));
     }
 
+    @Test
+    void verificarDia_diaInvalido_deveRetornarFalse() {
+        ArrayList<String> dias = new ArrayList<>(Arrays.asList("segunda"));
+        assertFalse(Data.verificarDia(dias));
+    }
+
+    @Test
+    void verificarDia_multiplosDias_deveRetornarTrueQuandoUmCoincide() {
+        ArrayList<String> dias = new ArrayList<>(Arrays.asList(
+                diaDiferenteDeHoje(),
+                diaDaSemanaAtual()));
+        assertTrue(Data.verificarDia(dias));
+    }
+
+    private void resetarUltimaVerificacao(int valor) throws Exception {
+        Field field = Data.class.getDeclaredField("ultimaVerficacaoHorario");
+        field.setAccessible(true);
+        field.setInt(null, valor);
+    }
+
+    private String diaDaSemanaAtual() {
+        return switch (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
+            case 2 -> "seg";
+            case 3 -> "ter";
+            case 4 -> "qua";
+            case 5 -> "qui";
+            case 6 -> "sex";
+            case 7 -> "sab";
+            default -> "dom";
+        };
+    }
+
+    private String diaDiferenteDeHoje() {
+        String hoje = diaDaSemanaAtual();
+        for (String dia : List.of("seg", "ter", "qua", "qui", "sex", "sab", "dom")) {
+            if (!dia.equals(hoje)) {
+                return dia;
+            }
+        }
+        return "seg";
+    }
+
+    private Uso novoUsoComDia(String dia) {
+        return new Uso(
+                new Medicamento("Dipirona"),
+                1,
+                new ArrayList<>(Arrays.asList(dia)),
+                5,
+                10,
+                8,
+                12);
+    }
 }

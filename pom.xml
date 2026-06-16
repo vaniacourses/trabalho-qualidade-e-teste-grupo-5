@@ -19,6 +19,9 @@
         <assertj.swing.version>3.17.1</assertj.swing.version>
         <jacoco.version>0.8.12</jacoco.version>
         <pitest.version>1.17.0</pitest.version>
+        <jacocoArgLine></jacocoArgLine>
+        <testJvmArgs>-Djava.awt.headless=false --add-opens java.base/java.util=ALL-UNNAMED</testJvmArgs>
+        <pitJvmArgs>-Djava.awt.headless=false</pitJvmArgs>
     </properties>
 
     <dependencies>
@@ -74,7 +77,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <argLine>@{argLine} -Djava.awt.headless=false --add-opens java.base/java.util=ALL-UNNAMED</argLine>
+                    <argLine>@{jacocoArgLine} ${testJvmArgs}</argLine>
                 </configuration>
             </plugin>
 
@@ -87,6 +90,9 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <propertyName>jacocoArgLine</propertyName>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>report</id>
@@ -103,6 +109,7 @@
                 <artifactId>pitest-maven</artifactId>
                 <version>${pitest.version}</version>
                 <configuration>
+                    <argLine>${pitJvmArgs}</argLine>
                     <targetClasses>
                         <param>backend.usuario.Uso</param>
                         <param>backend.gerenciamento.Data</param>

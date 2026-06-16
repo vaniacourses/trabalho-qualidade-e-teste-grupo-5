@@ -50,6 +50,7 @@ public class Data {
         int horaAtual = c.get(Calendar.HOUR_OF_DAY);
 
         if(hora == horaAtual && verificarUltimaVerificacao(hora)){
+            Data.ultimaVerficacaoHorario = hora;
             return true;
         }
 
@@ -88,8 +89,11 @@ public class Data {
             case "sab":
                 d = 7;
                 break;
-            default: //dom
-                d = 1; 
+            case "dom":
+                d = 1;
+                break;
+            default:
+                d = 0;
                 break;
         }
 
@@ -97,6 +101,10 @@ public class Data {
     }
 
     public static boolean verificarDia(ArrayList<String> dias) {
+        if (dias == null) {
+            return false;
+        }
+
         Calendar c = Calendar.getInstance();
         int hoje = c.get(Calendar.DAY_OF_WEEK);
 
