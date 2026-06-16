@@ -127,6 +127,19 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 | Planilha para testes manuais | Sandro |
 | TestLink | Gabriel |
 
+### Entrega 2 — Classe sob teste (contribuição individual)
+
+| Integrante | Classe | Pacote | Testes | Meta JaCoCo (branches) | Meta PIT |
+|------------|--------|--------|--------|------------------------|----------|
+| Alexandre Colmenero | `Uso` | `backend.usuario` | `UsoTest` | ≥ 80% | ≥ 80% |
+| **Gabriel Soares** | **`Data`** | **`backend.gerenciamento`** | **`DataTest`** | **≥ 80%** | **≥ 80%** |
+| Leonardo Carvalho | `Agenda` | `backend` | `AgendaTest` | ≥ 80% | ≥ 80% |
+| Mateus Magalhães | `PessoaFisica` | `backend.usuario` | `PessoaFisicaTest` | ≥ 80% | ≥ 80% |
+| Sandro Henrique | `FuncoesArquivos` | `backend` | `FuncoesArquivosTest` | ≥ 80% | ≥ 80% |
+
+> Detalhamento completo: [`DIVISAO_CLASSES_ENTREGA2.md`](./DIVISAO_CLASSES_ENTREGA2.md)
+
+**Gabriel Soares (`Data`):** responsável por testes estruturais (todas-arestas) e testes baseados em defeitos (PIT) na classe `Data`, que centraliza verificação de hora/dia e formatação de dias da semana para alertas de medicação.
 
 ---
 

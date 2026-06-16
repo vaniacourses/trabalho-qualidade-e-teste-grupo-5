@@ -3,13 +3,16 @@ package backend.gerenciamento;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import backend.FuncoesArquivos;
 import backend.usuario.PessoaFisica;
 import backend.usuario.Uso;
 
 public class Gerenciador implements Runnable {
-    private static ArrayList<Uso> listaDeUsos = new ArrayList<Uso>();
+    private static final Logger LOGGER = Logger.getLogger(Gerenciador.class.getName());
+    private static ArrayList<Uso> listaDeUsos = new ArrayList<>();
     private static PessoaFisica pessoa;
 
     public static void setPessoa(PessoaFisica p) {
@@ -17,10 +20,7 @@ public class Gerenciador implements Runnable {
     }
 
     private static void atualizarUso(String nomeMedicamento, int dose, int qtd) {
-        int novaQtdDisponivel = 0;
-        System.out.println(pessoa.getUsoListaUsoMedicamentos(nomeMedicamento));
-        novaQtdDisponivel = qtd - dose;
-        System.out.println(pessoa);
+        int novaQtdDisponivel = qtd - dose;
         File arquivoEstoque = new File(pessoa.getNomeArquivoUsos());
         if(arquivoEstoque.exists()){
             List<Uso> estoque = PessoaFisica.resgatarListaUsoMedicamentosArquivo(pessoa.getNomeArquivoUsos());
@@ -29,24 +29,10 @@ public class Gerenciador implements Runnable {
         pessoa.atualizarQntRemediosListaUsoMedicamentos(nomeMedicamento, novaQtdDisponivel);
     }
 
-    private static int verificarIntervaloDoGerenciador() {
-        int menor = 24;
-        if (listaDeUsos != null) {
-            for (Uso uso : listaDeUsos) {
-                if (uso.getIntervalo() < menor) {
-                    menor = uso.getIntervalo();
-                }
-            }
-        }
-        return menor;
-    }
-
     private static boolean enviarNotificacao(String notificacao, Uso uso) {
         Runnable runNotify = () -> {
             boolean tomouRemedio = Notificacao.notificar(notificacao);
             if (tomouRemedio) {
-                System.out.println(uso.getRemedio().getNome());
-                System.out.println(uso.getDose());
                 atualizarUso(uso.getRemedio().getNome(), uso.getDose(), uso.getQtdDisponivel());
             }
         };
@@ -95,19 +81,6 @@ public class Gerenciador implements Runnable {
 
     @Override
     public void run() {
-        /* lê usos do arquivo do usuário
-        // listaDeUsos = (ArrayList<Uso>)
-        // PessoaFisica.resgatarListaUsoMedicamentosArquivo(pessoa.getNomeArquivoUsos());
-        // if (listaDeUsos == null) {
-        // Thread.interrupted();
-        // }
-        // calcula todos os horários de cada um dos usos
-        // for (Uso uso : listaDeUsos) {
-        // uso.calcularHorariosDeUso();
-        // }
-        */
-
-        
         //thread que envia notificações de compra de remédios a cada 1 hora
         //além disso, verfica a necessidade diminuir em um dia a duração do tratamento todo dia às 0hXmin
         //verifica a necessidade de enviar notificações sobre horario de tomar medicamento
@@ -124,9 +97,10 @@ public class Gerenciador implements Runnable {
             // término do tratamento
             for (Uso uso : listaDeUsos) {
                 if (verificarQtdRemedio(uso)) {
-                    while(enviarNotificacaoCompra(uso)){}
+                    while(enviarNotificacaoCompra(uso)){
+                        // aguarda confirmação de compra
+                    }
                 }
-                //System.out.println("compra "+uso.getRemedio().getNome());
             }
 
             //enviar notificacao para tomar o medicamento na hora correta
@@ -138,12 +112,12 @@ public class Gerenciador implements Runnable {
                                 + horario + "h\nDose: "+uso.getDose() +" comprimido(s)\n"
                                 + "Você tomou o remédio às " + horario
                                 + " horas?\n Se sim, clique em SIM para confirmar. Clique em NÃO, caso contrário.",
-                                uso));
+                                uso)){
+                            // aguarda confirmação do usuário
+                        }
                     }
                 }
             }
-
-            //System.out.println("aqui!!!");
 
             //exclui uso quando a duracao do tramento é finalizada
             for(Uso uso: listaDeUsos){
@@ -161,14 +135,11 @@ public class Gerenciador implements Runnable {
             }
             
             //gerenciador dorme por uma hora
-            int menorIntervalo = verificarIntervaloDoGerenciador();
-            //long dormir = menorIntervalo * 3600000;
             long dormir = 3600000;
-            //System.out.print("aqui!!!!!!!");
             try {
                 Thread.sleep(dormir);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, "Gerenciador interrompido durante a espera", e);
             }  
         }
     }

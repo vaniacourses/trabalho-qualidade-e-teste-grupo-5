@@ -113,7 +113,7 @@ public class Endereco {
 
     @Override
     public String toString(){
-        ArrayList<String> listaValoresAtributos = new ArrayList<String>();
+        ArrayList<String> listaValoresAtributos = new ArrayList<>();
         listaValoresAtributos.add(this.getNomeDaRua());
         listaValoresAtributos.add(this.getNumero());
 
@@ -159,8 +159,7 @@ public class Endereco {
             listaValoresAtributos.add("null");
         }
 
-        String enderecoString = String.join("/", listaValoresAtributos);
-        return enderecoString;
+        return String.join("/", listaValoresAtributos);
     }
 
     public String toStringFront(){
@@ -174,8 +173,7 @@ public class Endereco {
             }
         }
 
-        String enderecoStringFront = String.join(",", listaTemp);
-        return enderecoStringFront;
+        return String.join(",", listaTemp);
     }
 
     public static Endereco stringToEndereco(String enderecoString){
@@ -183,7 +181,7 @@ public class Endereco {
         Endereco endereco = new Endereco(dadosEndereco[0], dadosEndereco[1]);
 
         for (int i = 2; i < 8; i++){
-            if (dadosEndereco[i] != "null"){
+            if (!"null".equals(dadosEndereco[i])){
                 switch (i){
                     case 2:
                         endereco.setComplemento(dadosEndereco[i]);

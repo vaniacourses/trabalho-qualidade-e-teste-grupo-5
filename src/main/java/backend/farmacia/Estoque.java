@@ -1,13 +1,15 @@
 package backend.farmacia;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import backend.Medicamento;
 
 public class Estoque {
+    private static final Logger LOGGER = Logger.getLogger(Estoque.class.getName());
     public ArrayList<ItemEstoque> listaEstoque;
 
     public Estoque(){
-        this.listaEstoque = new ArrayList<ItemEstoque>();
+        this.listaEstoque = new ArrayList<>();
     }
 
     public void addMedicamentoEstoque(Medicamento medicamento, int qntMedicamento){
@@ -33,8 +35,8 @@ public class Estoque {
 
     public void printEstoque(){
         for (ItemEstoque itemEstoque : this.listaEstoque){
-            System.out.println("medicamento: " + itemEstoque.getMedicamento().getNome() + " / qnt: " + itemEstoque.getQntMedicamento());
-            System.out.println("----------");
+            LOGGER.info(() -> "medicamento: " + itemEstoque.getMedicamento().getNome()
+                    + " / qnt: " + itemEstoque.getQntMedicamento());
         }
     }
 }

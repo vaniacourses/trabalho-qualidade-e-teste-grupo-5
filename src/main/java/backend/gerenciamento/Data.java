@@ -7,7 +7,6 @@ import backend.usuario.Uso;
 
 //classe responsavel por verificacoes de hora
 public class Data {
-    private static boolean duracaoDoTratamentoAtualizada = true;
     private static int ultimaVerficacaoHorario = 0;
 
     //verifica apenas a hora para fins de simplificacao do prototipo
@@ -30,16 +29,8 @@ public class Data {
         int horaAtual = c.get(Calendar.HOUR_OF_DAY);
 
         if(horaAtual == 0){
-            // if(duracaoDoTratamentoAtualizada == false){
-            //     meiaNoite = true;
-            //     Data.duracaoDoTratamentoAtualizada = true;
-            // }
             meiaNoite = true;
         }
-
-        // if(duracaoDoTratamentoAtualizada==true && horaAtual != 15){
-        //     Data.duracaoDoTratamentoAtualizada = false;
-        // }
 
         return meiaNoite;
     }
@@ -50,6 +41,7 @@ public class Data {
         int horaAtual = c.get(Calendar.HOUR_OF_DAY);
 
         if(hora == horaAtual && verificarUltimaVerificacao(hora)){
+            Data.ultimaVerficacaoHorario = hora;
             return true;
         }
 
@@ -88,8 +80,11 @@ public class Data {
             case "sab":
                 d = 7;
                 break;
-            default: //dom
-                d = 1; 
+            case "dom":
+                d = 1;
+                break;
+            default:
+                d = 0;
                 break;
         }
 
@@ -97,6 +92,10 @@ public class Data {
     }
 
     public static boolean verificarDia(ArrayList<String> dias) {
+        if (dias == null) {
+            return false;
+        }
+
         Calendar c = Calendar.getInstance();
         int hoje = c.get(Calendar.DAY_OF_WEEK);
 
@@ -108,16 +107,4 @@ public class Data {
 
         return false;
     }
-
-    //main utilizada para fins de teste
-    // public static void main(String[] args) {
-    //     Calendar c = Calendar.getInstance();
-    //     System.out.println(c.getTime());
-
-    //     int d = c.get(Calendar.DAY_OF_WEEK);
-    //     System.out.println("Dia: " + d);
-
-    //     int h = c.get(Calendar.HOUR_OF_DAY);
-    //     System.out.println("Hora: " + h);
-    // }
 }
