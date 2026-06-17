@@ -92,7 +92,7 @@ public class Agenda {
             System.out.println("Contato não encontrado!");
             return false;
         } else {
-            ArrayList<Pessoa> novaLista = this.getContatos();
+            ArrayList<Pessoa> novaLista = new ArrayList<>(this.getContatos());
             
             for (Pessoa contato : this.getContatos()){
                 if (contato.getNome().equals(nome)){

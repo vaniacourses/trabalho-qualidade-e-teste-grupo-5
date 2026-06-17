@@ -259,26 +259,32 @@ final class FrontendTestSupport {
     }
 
     static void prepararArquivoUsuariosVazio() throws IOException {
+        Path p = Path.of(PessoaFisica.nomeArquivoUsuarios);
+        Files.createDirectories(p.getParent());
         String cabecalho = """
                 nome,telefone,email,senha,cpf,endereco,nomeArquivoUsosMedicamentos,agendaContatosMedicos,agendaContatosFarmacias
                 """;
-        Files.writeString(Path.of(PessoaFisica.nomeArquivoUsuarios), cabecalho);
+        Files.writeString(p, cabecalho);
     }
 
     static void prepararUsuarioDeTeste(String email, String senha) throws IOException {
+        Path p = Path.of(PessoaFisica.nomeArquivoUsuarios);
+        Files.createDirectories(p.getParent());
         String conteudo = """
                 nome,telefone,email,senha,cpf,endereco,nomeArquivoUsosMedicamentos,agendaContatosMedicos,agendaContatosFarmacias
                 E2E User,11999999999,%s,%s,99988877766,Rua E2E/1/null/null/null/null/null/null,null,null,null
                 """.formatted(email, senha);
-        Files.writeString(Path.of(PessoaFisica.nomeArquivoUsuarios), conteudo);
+        Files.writeString(p, conteudo);
     }
 
     static void prepararFarmaciaDeTeste(String email, String senha) throws IOException {
+        Path p = Path.of(PessoaJuridica.nomeArquivoFarmacias);
+        Files.createDirectories(p.getParent());
         String conteudo = """
                 nome,telefone,email,senha,cnpj,endereco,nomeArquivoEstoque,AgendaContatosClientes
                 Farmacia E2E,11988887777,%s,%s,12345678000199,Rua Farmacia/10/Sala 1/null/null/null/null/null,null,null
                 """.formatted(email, senha);
-        Files.writeString(Path.of(PessoaJuridica.nomeArquivoFarmacias), conteudo);
+        Files.writeString(p, conteudo);
     }
 
     static void limparArquivosDeTeste() throws IOException {

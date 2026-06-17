@@ -115,10 +115,12 @@
                     <targetClasses>
                         <param>backend.usuario.Uso</param>
                         <param>backend.gerenciamento.Data</param>
+                        <param>backend.Agenda</param>
                     </targetClasses>
                     <targetTests>
                         <param>backend.usuario.UsoTest</param>
                         <param>backend.gerenciamento.DataTest</param>
+                        <param>backend.AgendaTest</param>
                     </targetTests>
                     <mutationThreshold>80</mutationThreshold>
                     <coverageThreshold>80</coverageThreshold>
