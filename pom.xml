@@ -65,9 +65,9 @@
 
                 <configuration>
                     <includes>
-                        <include>backend/**/*.java</include>
-                        <include>frontend/**/*.java</include>
-                        <include>inicio/**/*.java</include>
+                        <include>backend/*/.java</include>
+                        <include>frontend/*/.java</include>
+                        <include>inicio/*/.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -115,10 +115,14 @@
                     <targetClasses>
                         <param>backend.usuario.Uso</param>
                         <param>backend.gerenciamento.Data</param>
+                        <param>backend.Agenda</param>
+                        <param>backend.usuario.PessoaFisica</param>
                     </targetClasses>
                     <targetTests>
                         <param>backend.usuario.UsoTest</param>
                         <param>backend.gerenciamento.DataTest</param>
+                        <param>backend.AgendaTest</param>
+                        <param>backend.usuario.PessoaFisicaTest</param>
                     </targetTests>
                     <mutationThreshold>80</mutationThreshold>
                     <coverageThreshold>80</coverageThreshold>
