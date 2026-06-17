@@ -107,7 +107,9 @@ class UsoTest {
 
     @Test
     void stringToUso_linhaInvalida_deveLancarExcecaoDeValidacao() {
-        assertThrows(Exception.class, () -> Uso.stringToUso("remedio,abc,seg,7,10,8,12"));
+        assertThrows(IllegalArgumentException.class, () -> Uso.stringToUso("remedio,abc,seg,7,10,8,12"));
+        assertThrows(IllegalArgumentException.class, () -> Uso.stringToUso(""));
+        assertThrows(IllegalArgumentException.class, () -> Uso.stringToUso("remedio,1"));
     }
 
     // --- validações nos setters (baseado em defeitos) ---
