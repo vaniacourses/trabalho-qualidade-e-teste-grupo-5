@@ -4,6 +4,8 @@ import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.event.ActionEvent;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -141,13 +143,21 @@ class CadastroMedicamentoE2ETest {
 
             java.lang.reflect.Field fHora = ListaRemedios.class.getDeclaredField("horaRemedio");
             fHora.setAccessible(true);
-            javax.swing.JComboBox comboHora = (javax.swing.JComboBox) fHora.get(listaRemedios);
-            GuiActionRunner.execute(() -> comboHora.setSelectedItem("08hr"));
+            javax.swing.JComboBox<?> comboHora = (javax.swing.JComboBox<?>) fHora.get(listaRemedios);
 
             java.lang.reflect.Field fIntervalo = ListaRemedios.class.getDeclaredField("intervaloRemedio");
             fIntervalo.setAccessible(true);
-            javax.swing.JComboBox comboIntervalo = (javax.swing.JComboBox) fIntervalo.get(listaRemedios);
-            GuiActionRunner.execute(() -> comboIntervalo.setSelectedItem("de 12 em 12 horas"));
+            javax.swing.JComboBox<?> comboIntervalo = (javax.swing.JComboBox<?>) fIntervalo.get(listaRemedios);
+
+            GuiActionRunner.execute(() -> {
+                comboHora.setSelectedItem("08hr");
+                for (var listener : comboHora.getActionListeners()) {
+                    listener.actionPerformed(new ActionEvent(comboHora, ActionEvent.ACTION_PERFORMED, "command"));
+                }
+                comboIntervalo.setEnabled(true);
+                comboIntervalo.setSelectedItem("de 12 em 12 horas");
+            });
+            robot.waitForIdle();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -164,6 +174,7 @@ class CadastroMedicamentoE2ETest {
         FrameFixture novaTelaListaRemedios = WindowFinder.findFrame(ListaRemedios.class).using(robot);
         
         // 8. Valida se foi salvo na tabela
+        novaTelaListaRemedios.table().requireRowCount(1);
         String conteudoTabela = novaTelaListaRemedios.table().contents()[0][0];
         assertTrue(conteudoTabela.contains("Dipirona"), "A tabela deve conter o remédio 'Dipirona'");
         

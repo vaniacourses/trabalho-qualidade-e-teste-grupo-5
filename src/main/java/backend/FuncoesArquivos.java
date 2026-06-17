@@ -152,7 +152,12 @@ public class FuncoesArquivos {
     // importante
     public static void salvarListaEmArquivo(String nomeArquivo, List<String> listaLinhas, boolean append){
         try{
-            FileWriter fw = new FileWriter(nomeArquivo, append);
+            File arquivo = new File(nomeArquivo);
+            File diretorioPai = arquivo.getParentFile();
+            if (diretorioPai != null) {
+                diretorioPai.mkdirs();
+            }
+            FileWriter fw = new FileWriter(arquivo, append);
             BufferedWriter bw = new BufferedWriter(fw);
 
             for (String linha : listaLinhas){

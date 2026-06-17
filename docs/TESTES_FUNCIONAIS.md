@@ -87,3 +87,18 @@ Testa a combinação: [Email Correto] E [Senha Correta] -> Efeito: Sucesso (Obje
 | **Dados de Entrada** | - Email: "bernardo@hospital.com"<br>- Senha: "senha123" |
 | **Passos de Execução** | 1. O método `resgatarMedicoArquivo` é chamado com os dados de entrada. |
 | **Resultado Esperado** | O sistema deve retornar um objeto Medico não nulo, com o nome "Dr. Bernardo" e especialidade "Cirurgiao". |
+
+### Caso de Teste 07: Cadastro seguido de Login (Combinação Verdadeira — E2E)
+Testa a combinação: [Cadastro Completo e Válido] E [Email Existe no Arquivo] E [Senha Correta] → Efeito: Acesso autenticado na Home.
+Alinhado ao teste manual [TM-05](../testes_manuais/TM-05-cadastro-de-usu-rio-como-pesso.md).
+
+| Campo | Descrição |
+| :--- | :--- |
+| **ID do Caso de Teste** | CT-CE-03 |
+| **Técnica** | Grafo Causa-Efeito (Lógica Booleana) |
+| **Nome do Cenário** | Cadastro de pessoa seguido de login com as credenciais recém-criadas |
+| **Origem no Código** | `frontend.FluxoCadastroLoginE2ETest -> cadastroSeguidoDeLogin_deveAutenticarComCredenciaisCriadas` |
+| **Pré-condições** | O arquivo de usuários (`RegistroUsuarios.txt`) deve estar vazio ou inexistente. A aplicação deve estar no menu inicial. |
+| **Dados de Entrada** | - Nome: "Fluxo E2E"<br>- CPF: "55566677788"<br>- Email: "fluxo.e2e@test.com"<br>- Senha: "senhaFluxo123"<br>- Telefone: "21911112222"<br>- Endereço: "Rua Fluxo", "100", "Casa" |
+| **Passos de Execução** | 1. Abrir o menu inicial e navegar para a tela de cadastro de pessoa (`LoginPessoa`).<br>2. Preencher todos os campos com os dados de entrada.<br>3. Clicar no botão "Prox." e verificar que o usuário foi persistido no arquivo.<br>4. Reabrir o menu inicial e navegar para a tela de login (`EntrarPessoa`).<br>5. Preencher email e senha com as credenciais criadas no cadastro.<br>6. Clicar no botão "Prox." e aguardar o fechamento da tela de login.<br>7. Abrir a tela `Home` com o usuário autenticado e verificar os dados exibidos. |
+| **Resultado Esperado** | O usuário deve ser salvo no arquivo após o cadastro. O login deve fechar a tela `EntrarPessoa`. A `Home` deve exibir o nome "Fluxo E2E", o CPF "55566677788" e o botão "Meus remédios". |

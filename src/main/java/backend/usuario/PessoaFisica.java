@@ -68,13 +68,13 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
     public void removerUsoNaListaUsoMedicamentos(String nomeMedicamento){
         List<Uso> listaUsoTemp = this.getListaUsoMedicamentos();
 
-        if(this.getListaUsoMedicamentos() == null){
+        if(listaUsoTemp == null){
             return;
         }
 
-        for (Uso uso : this.getListaUsoMedicamentos()){
-            if (uso.getRemedio().getNome().equals(nomeMedicamento)){
-                listaUsoTemp.remove(uso);
+        for (int i = 0; i < listaUsoTemp.size(); i++) {
+            if (listaUsoTemp.get(i).getRemedio().getNome().equals(nomeMedicamento)) {
+                listaUsoTemp.remove(i);
                 break;
             }
         }
@@ -84,9 +84,9 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
     public void atualizarQntRemediosListaUsoMedicamentos(String nomeMedicamento, int novaQuantidade){
         List<Uso> listaUsoTemp = this.getListaUsoMedicamentos();
 
-        if(this.getListaUsoMedicamentos() == null){
+        if(listaUsoTemp == null){
             System.out.println("lista de uso de medicamentos vazia");
-            return;
+            throw new IllegalStateException("lista de uso de medicamentos vazia");
         }
 
         for (Uso uso : listaUsoTemp){
@@ -156,9 +156,12 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
     public void salvarArquivoUsos(){
         ArrayList<String> listaLinhas = new ArrayList<>();
         
-        for (Uso uso : this.getListaUsoMedicamentos()){
-            String usoString = uso.toString();
-            listaLinhas.add(usoString);
+        List<Uso> listaUso = this.getListaUsoMedicamentos();
+        if (listaUso != null) {
+            for (Uso uso : listaUso){
+                String usoString = uso.toString();
+                listaLinhas.add(usoString);
+            }
         }
 
         FuncoesArquivos.salvarListaEmArquivo(this.getNomeArquivoUsos(), listaLinhas, false);
@@ -242,7 +245,7 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
     }
 
     public String getNomeArquivoUsos(){
-        return "backend\\usuario\\arquivosUsosUsuarios\\" + "Uso" + this.getCpf() + ".txt";
+        return "backend/usuario/arquivosUsosUsuarios/" + "Uso" + this.getCpf() + ".txt";
     }
 
     @Override
@@ -252,7 +255,7 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
 
         ArrayList<String> listaValoresAtributos = new ArrayList<String>();
         listaValoresAtributos.add(this.getCpf());
-        listaValoresAtributos.add(this.getEndereco().toString());
+        listaValoresAtributos.add(this.getEndereco() != null ? this.getEndereco().toString() : "null");
 
         if (this.getListaUsoMedicamentos() != null){
             listaValoresAtributos.add(this.getNomeArquivoUsos());
@@ -286,7 +289,7 @@ public class PessoaFisica extends Pessoa implements SalvavelBancoDeDados{
 
         ArrayList<String> listaValoresAtributos = new ArrayList<String>();
         listaValoresAtributos.add(this.getCpf());
-        listaValoresAtributos.add(this.getEndereco().toString());
+        listaValoresAtributos.add(this.getEndereco() != null ? this.getEndereco().toString() : "null");
 
         if (this.getListaUsoMedicamentos() != null){
             listaValoresAtributos.add(this.getNomeArquivoUsos());

@@ -65,9 +65,9 @@
 
                 <configuration>
                     <includes>
-                        <include>backend/*/.java</include>
-                        <include>frontend/*/.java</include>
-                        <include>inicio/*/.java</include>
+                        <include>backend/**/*.java</include>
+                        <include>frontend/**/*.java</include>
+                        <include>inicio/**/*.java</include>
                     </includes>
                 </configuration>
             </plugin>

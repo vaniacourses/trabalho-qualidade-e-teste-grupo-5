@@ -220,7 +220,7 @@ final class FrontendTestSupport {
     }
 
     static DialogFixture aguardarDialogoMensagem(Robot robot, String mensagem) {
-        DialogFixture dialogo = WindowFinder.findDialog(DialogMatcher.withTitle("Message"))
+        DialogFixture dialogo = WindowFinder.findDialog(DialogMatcher.withTitle(java.util.regex.Pattern.compile("Message|Mensagem")))
                 .withTimeout(5_000)
                 .using(robot);
         dialogo.label(JLabelMatcher.withText(mensagem)).requireVisible();
@@ -259,32 +259,38 @@ final class FrontendTestSupport {
     }
 
     static void prepararArquivoUsuariosVazio() throws IOException {
-        Path p = Path.of(PessoaFisica.nomeArquivoUsuarios);
-        Files.createDirectories(p.getParent());
+        Path path = Path.of(PessoaFisica.nomeArquivoUsuarios);
+        if (path.getParent() != null) {
+            Files.createDirectories(path.getParent());
+        }
         String cabecalho = """
                 nome,telefone,email,senha,cpf,endereco,nomeArquivoUsosMedicamentos,agendaContatosMedicos,agendaContatosFarmacias
                 """;
-        Files.writeString(p, cabecalho);
+        Files.writeString(path, cabecalho);
     }
 
     static void prepararUsuarioDeTeste(String email, String senha) throws IOException {
-        Path p = Path.of(PessoaFisica.nomeArquivoUsuarios);
-        Files.createDirectories(p.getParent());
+        Path path = Path.of(PessoaFisica.nomeArquivoUsuarios);
+        if (path.getParent() != null) {
+            Files.createDirectories(path.getParent());
+        }
         String conteudo = """
                 nome,telefone,email,senha,cpf,endereco,nomeArquivoUsosMedicamentos,agendaContatosMedicos,agendaContatosFarmacias
                 E2E User,11999999999,%s,%s,99988877766,Rua E2E/1/null/null/null/null/null/null,null,null,null
                 """.formatted(email, senha);
-        Files.writeString(p, conteudo);
+        Files.writeString(path, conteudo);
     }
 
     static void prepararFarmaciaDeTeste(String email, String senha) throws IOException {
-        Path p = Path.of(PessoaJuridica.nomeArquivoFarmacias);
-        Files.createDirectories(p.getParent());
+        Path path = Path.of(PessoaJuridica.nomeArquivoFarmacias);
+        if (path.getParent() != null) {
+            Files.createDirectories(path.getParent());
+        }
         String conteudo = """
                 nome,telefone,email,senha,cnpj,endereco,nomeArquivoEstoque,AgendaContatosClientes
                 Farmacia E2E,11988887777,%s,%s,12345678000199,Rua Farmacia/10/Sala 1/null/null/null/null/null,null,null
                 """.formatted(email, senha);
-        Files.writeString(p, conteudo);
+        Files.writeString(path, conteudo);
     }
 
     static void limparArquivosDeTeste() throws IOException {
@@ -303,8 +309,8 @@ final class FrontendTestSupport {
     private static List<JTextField> listarCamposTexto(Container raiz) {
         List<JTextField> campos = new ArrayList<>();
         for (Component componente : raiz.getComponents()) {
-            if (componente instanceof JTextField campoTexto && campoTexto.isShowing()) {
-                campos.add(campoTexto);
+            if (componente.getClass() == JTextField.class && componente.isShowing()) {
+                campos.add((JTextField) componente);
             }
             if (componente instanceof Container container) {
                 campos.addAll(listarCamposTexto(container));

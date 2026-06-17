@@ -121,6 +121,7 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 - [**Testes Funcionais (Entrega 2)**](./docs/TESTES_FUNCIONAIS.md)
 - **Alexandre Colmenero** — classe `Uso` (`backend.usuario`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `UsoTest` + teste E2E `CadastroMedicamentoE2ETest`
 - **Gabriel Soares** — classe `Data` (`backend.gerenciamento`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `DataTest`
+- **Mateus Magalhães** — classe `PessoaFisica` (`backend.usuario`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `PessoaFisicaTest` + teste funcional E2E `FluxoCadastroLoginE2ETest` (**CT-CE-03** — técnica *Grafo Causa-Efeito*)
 - **Sandro Teixeira** — classe `FuncoesArquivos` (`backend`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `FuncoesArquivosTest` + teste E2E `CadastroFarmaciaE2ETest`
 - [**Apresentação**]()
 

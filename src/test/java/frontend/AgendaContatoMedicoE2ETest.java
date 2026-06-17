@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -97,24 +99,16 @@ class AgendaContatoMedicoE2ETest {
 
         // --- EXECUÇÃO DO FLUXO DO TESTE MANUAL TM-03 ---
         // 6. Clicar no botão "Contatos dos Médicos"
-        telaHome.button(new GenericTypeMatcher<JButton>(JButton.class) {
-            @Override
-            protected boolean isMatching(JButton component) {
-                return "Contatos dos Médicos".equals(component.getText());
-            }
-        }).click();
+        JButton btnContatosMedicos = robot.finder().find(homeFrame, withText("Contatos dos Médicos"));
+        FrontendTestSupport.clicarBotao(robot, btnContatosMedicos);
 
         // 7. Obter a janela de gerenciamento de contatos médicos
-        telaContatos = WindowFinder.findFrame(ContatosMedicos.class).using(robot);
+        telaContatos = WindowFinder.findFrame(ContatosMedicos.class).withTimeout(5_000).using(robot);
         assertNotNull(telaContatos, "Tela de Contatos Médicos deve ser exibida");
 
         // 8. Clicar no botão "Novo contato"
-        telaContatos.button(new GenericTypeMatcher<JButton>(JButton.class) {
-            @Override
-            protected boolean isMatching(JButton component) {
-                return "Novo contato".equals(component.getText());
-            }
-        }).click();
+        JButton btnNovoContato = robot.finder().find(telaContatos.target(), withText("Novo contato"));
+        FrontendTestSupport.clicarBotao(robot, btnNovoContato);
 
         // 9. Localizar e ordenar os campos de texto na tela de contatos
         List<JTextField> camposTexto = new ArrayList<>(robot.finder().findAll(telaContatos.target(), new GenericTypeMatcher<JTextField>(JTextField.class) {
@@ -139,16 +133,12 @@ class AgendaContatoMedicoE2ETest {
         FrontendTestSupport.digitarTexto(robot, new JTextComponentFixture(robot, numeroMedicoField), "11999999999");
 
         // 11. Clicar no botão "Salvar"
-        telaContatos.button(new GenericTypeMatcher<JButton>(JButton.class) {
-            @Override
-            protected boolean isMatching(JButton component) {
-                return "Salvar".equals(component.getText());
-            }
-        }).click();
+        JButton btnSalvar = robot.finder().find(telaContatos.target(), withText("Salvar"));
+        FrontendTestSupport.clicarBotao(robot, btnSalvar);
 
         // --- RESULTADO ESPERADO: CONTATO SALVO E VISÍVEL ---
         // 12. Obter a nova tela de contatos reaberta após salvamento
-        novaTelaContatos = WindowFinder.findFrame(ContatosMedicos.class).using(robot);
+        novaTelaContatos = WindowFinder.findFrame(ContatosMedicos.class).withTimeout(5_000).using(robot);
         assertNotNull(novaTelaContatos, "Uma nova janela de Contatos Médicos deve ser reaberta");
 
         // 13. Verificar se o contato é exibido na tabela da interface gráfica

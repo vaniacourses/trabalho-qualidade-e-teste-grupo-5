@@ -177,11 +177,14 @@ public class ContatosMedicos extends javax.swing.JFrame {
                 .addContainerGap())
         );
         DefaultTableModel val = (DefaultTableModel) tabelaContato.getModel();
-        for(Pessoa medico : this.pessoa.getContatosMedicos().getContatos()){
-            String nome = medico.getNome();
-            String numero = medico.getTelefone();
-            String especialidade = (String) medico.getParticularidade();
-            val.addRow(new String[]{nome, numero, especialidade});   
+        Agenda agendaContatos = this.pessoa.getContatosMedicos();
+        if (agendaContatos != null) {
+            for (Pessoa medico : agendaContatos.getContatos()) {
+                String nome = medico.getNome();
+                String numero = medico.getTelefone();
+                String especialidade = (String) medico.getParticularidade();
+                val.addRow(new String[]{nome, numero, especialidade});
+            }
         }
 
         pack();

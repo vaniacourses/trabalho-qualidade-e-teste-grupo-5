@@ -1,12 +1,17 @@
 package frontend;
 
+import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 
+import javax.swing.WindowConstants;
+
 import org.assertj.swing.core.Robot;
+import org.assertj.swing.core.matcher.JLabelMatcher;
+import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +31,7 @@ class FluxoCadastroLoginE2ETest {
     private FrameFixture menu;
     private FrameFixture telaCadastro;
     private FrameFixture telaLogin;
+    private FrameFixture telaHome;
 
     @BeforeAll
     static void configurarAssertjSwing() {
@@ -34,7 +40,7 @@ class FluxoCadastroLoginE2ETest {
 
     @AfterEach
     void fechar() throws IOException {
-        FrontendTestSupport.encerrar(robot, telaLogin, telaCadastro, menu);
+        FrontendTestSupport.encerrar(robot, telaLogin, telaCadastro, menu, telaHome);
         FrontendTestSupport.limparArquivosDeTeste();
     }
 
@@ -75,5 +81,20 @@ class FluxoCadastroLoginE2ETest {
         PessoaFisica autenticado = PessoaFisica.resgatarUsuarioArquivo(EMAIL, SENHA, false, false);
         assertNotNull(autenticado);
         assertEquals("Fluxo E2E", autenticado.getNome());
+
+        // 4. Home autenticada
+        Home homeFrame = GuiActionRunner.execute(() -> {
+            Home h = new Home();
+            h.receber(autenticado);
+            h.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            h.setVisible(true);
+            return h;
+        });
+
+        telaHome = new FrameFixture(robot, homeFrame);
+        telaHome.requireVisible();
+        telaHome.label(JLabelMatcher.withText("Fluxo E2E")).requireVisible();
+        telaHome.label(JLabelMatcher.withText("55566677788")).requireVisible();
+        telaHome.button(withText("Meus remédios")).requireVisible();
     }
 }
