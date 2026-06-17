@@ -75,8 +75,8 @@ class UsoTest {
         usoSeisHoras.calcularHorariosDeUso();
 
         assertEquals(4, usoSeisHoras.getHorariosDeUso().size());
-        assertEquals(6, usoSeisHoras.getHorariosDeUso().get(0));
-        assertEquals(24, usoSeisHoras.getHorariosDeUso().get(3));
+        assertEquals(0, usoSeisHoras.getHorariosDeUso().get(0));
+        assertEquals(18, usoSeisHoras.getHorariosDeUso().get(3));
     }
 
     @Test

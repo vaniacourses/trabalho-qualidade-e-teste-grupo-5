@@ -73,6 +73,9 @@ public class Uso {
     }
 
     public void setIntervalo(int novoIntervalo){
+        if(novoIntervalo < 0){
+            throw new IllegalArgumentException("Não é possível setar intervalo negativo.");
+        }
         this.intervalo = novoIntervalo;
     }
 
@@ -92,7 +95,7 @@ public class Uso {
     }
 
     public void setTipoDoRemedio(String tipoDoRemedio) throws IllegalArgumentException{
-        if(tipoDoRemedio == ""){
+        if(tipoDoRemedio == null || tipoDoRemedio.isEmpty()){
             throw new IllegalArgumentException("É necessário informar tipo do remédio.");
         }
         this.tipoDoRemedio = tipoDoRemedio;
@@ -165,14 +168,15 @@ public class Uso {
     }
 
     public void calcularHorariosDeUso() {
+        this.horariosDeUso.clear();
         int horaInicial = this.horarioDeInicio;
         
         if(intervalo==0){
-            horariosDeUso.add(horaInicial);
+            horariosDeUso.add(horaInicial % 24);
         }
         else{
             for(int i = 0; i < 24/intervalo; i++){
-                this.horariosDeUso.add(horaInicial);
+                this.horariosDeUso.add(horaInicial % 24);
                 horaInicial += intervalo;
             }
         }
