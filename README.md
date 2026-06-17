@@ -117,8 +117,10 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 #### Segunda Entrega
 
 - [**Divisão de classes por integrante (Entrega 2)**](./docs/DIVISAO_CLASSES_ENTREGA2.md)
+- [**Atributos Prioritários da ISO/IEC 25010 (Entrega 2)**](./docs/ATRIBUTOS_DE_QUALIDADE_PRIORITARIOS_ISO_25010.md)
 - **Alexandre Colmenero** — classe `Uso` (`backend.usuario`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `UsoTest` + teste E2E `CadastroMedicamentoE2ETest`
 - **Gabriel Soares** — classe `Data` (`backend.gerenciamento`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `DataTest`
+- **Sandro Teixeira** — classe `FuncoesArquivos` (`backend`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `FuncoesArquivosTest`
 - [**Apresentação**]()
 
 
