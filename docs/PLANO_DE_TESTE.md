@@ -131,7 +131,7 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 | Integrante | Classe | Pacote | Testes | Meta JaCoCo (branches) | Meta PIT |
 |------------|--------|--------|--------|------------------------|----------|
-| Alexandre Colmenero | `Uso` | `backend.usuario` | `UsoTest` | ≥ 80% | ≥ 80% |
+| **Alexandre Colmenero** | **`Uso`** | **`backend.usuario`** | **`UsoTest` / `CadastroMedicamentoE2ETest`** | **≥ 80%** | **≥ 80%** |
 | **Gabriel Soares** | **`Data`** | **`backend.gerenciamento`** | **`DataTest`** | **≥ 80%** | **≥ 80%** |
 | Leonardo Carvalho | `Agenda` | `backend` | `AgendaTest` | ≥ 80% | ≥ 80% |
 | Mateus Magalhães | `PessoaFisica` | `backend.usuario` | `PessoaFisicaTest` | ≥ 80% | ≥ 80% |
@@ -140,6 +140,8 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 > Detalhamento completo: [`DIVISAO_CLASSES_ENTREGA2.md`](./DIVISAO_CLASSES_ENTREGA2.md)
 
 **Gabriel Soares (`Data`):** responsável por testes estruturais (todas-arestas) e testes baseados em defeitos (PIT) na classe `Data`, que centraliza verificação de hora/dia e formatação de dias da semana para alertas de medicação.
+
+**Alexandre Colmenero (`Uso`):** responsável por testes estruturais (todas-arestas) e testes baseados em defeitos (PIT) na classe `Uso` com uso do JUnit e JaCoCo, além do teste E2E de Cadastro de Medicamento pela interface utilizando AssertJ Swing.
 
 ---
 

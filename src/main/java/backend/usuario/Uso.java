@@ -73,6 +73,9 @@ public class Uso {
     }
 
     public void setIntervalo(int novoIntervalo){
+        if(novoIntervalo < 0){
+            throw new IllegalArgumentException("Não é possível setar intervalo negativo.");
+        }
         this.intervalo = novoIntervalo;
     }
 
@@ -92,7 +95,7 @@ public class Uso {
     }
 
     public void setTipoDoRemedio(String tipoDoRemedio) throws IllegalArgumentException{
-        if(tipoDoRemedio == ""){
+        if(tipoDoRemedio == null || tipoDoRemedio.isEmpty()){
             throw new IllegalArgumentException("É necessário informar tipo do remédio.");
         }
         this.tipoDoRemedio = tipoDoRemedio;
@@ -150,29 +153,42 @@ public class Uso {
         
     }
 
-    public static Uso stringToUso(String usoString){
+    public static Uso stringToUso(String usoString) throws IllegalArgumentException {
+        if(usoString == null || usoString.trim().isEmpty()){
+            throw new IllegalArgumentException("Linha CSV não pode ser nula ou vazia.");
+        }
+        
         String[] dadosLinha = usoString.split(",");
-        Medicamento remedio = new Medicamento(dadosLinha[0]);
-        int dose = Integer.parseInt(dadosLinha[1]);
-        ArrayList<String> horarios = horariosStringToList(dadosLinha[2]);
-        int duracaoDoTratamento = Integer.parseInt(dadosLinha[3]);
-        int qtdDisponivel = Integer.parseInt(dadosLinha[4]);
-        int horarioInicial = Integer.parseInt(dadosLinha[5]);
-        int intervalo = Integer.parseInt(dadosLinha[6]);
+        if(dadosLinha.length < 7){
+            throw new IllegalArgumentException("Linha CSV malformada, esperado pelo menos 7 campos.");
+        }
+        
+        try {
+            Medicamento remedio = new Medicamento(dadosLinha[0]);
+            int dose = Integer.parseInt(dadosLinha[1]);
+            ArrayList<String> horarios = horariosStringToList(dadosLinha[2]);
+            int duracaoDoTratamento = Integer.parseInt(dadosLinha[3]);
+            int qtdDisponivel = Integer.parseInt(dadosLinha[4]);
+            int horarioInicial = Integer.parseInt(dadosLinha[5]);
+            int intervalo = Integer.parseInt(dadosLinha[6]);
 
-        Uso uso = new Uso(remedio, dose, horarios, duracaoDoTratamento, qtdDisponivel, horarioInicial, intervalo);
-        return uso;
+            Uso uso = new Uso(remedio, dose, horarios, duracaoDoTratamento, qtdDisponivel, horarioInicial, intervalo);
+            return uso;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Erro ao converter números na linha CSV: " + usoString, e);
+        }
     }
 
     public void calcularHorariosDeUso() {
+        this.horariosDeUso.clear();
         int horaInicial = this.horarioDeInicio;
         
         if(intervalo==0){
-            horariosDeUso.add(horaInicial);
+            horariosDeUso.add(horaInicial % 24);
         }
         else{
             for(int i = 0; i < 24/intervalo; i++){
-                this.horariosDeUso.add(horaInicial);
+                this.horariosDeUso.add(horaInicial % 24);
                 horaInicial += intervalo;
             }
         }
