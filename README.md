@@ -19,7 +19,7 @@ Durante todo o ciclo de desenvolvimento, formulamos um planejamento de testes de
 
 A aplicação foi migrada para o **Java 17** e adota o **Maven** como gerenciador de dependências. As ferramentas de qualidade configuradas no projeto incluem:
 
-- **JUnit 4 & 5**: A base para a criação e execução dos testes unitários.
+- **JUnit 5**: Base para criação e execução dos testes unitários e de integração.
 - **Mockito**: Essencial para a geração de mocks e stubs, garantindo o isolamento durante os testes.
 - **AssertJ Swing**: Utilizado para a automação de testes de interface gráfica (GUI) e validação de sistema.
 - **JaCoCo**: Responsável por medir e gerar relatórios sobre a cobertura de código.
@@ -35,15 +35,16 @@ src
 ├── main
 │   └── java
 │       ├── backend         # Regras de negócio (Entidades, Controladores, etc.)
-│       │   ├── farmacia    # Lógica voltada para farmácias e controle de estoque
-│       │   ├── gerenciamento # Gestão de agendamentos e envio de notificações
-│       │   └── usuario     # Modelagem de usuários (Pessoa Física e Médicos)
-│       └── frontend        # Interface Gráfica desenvolvida com Swing
+│       │   ├── farmacia
+│       │   ├── gerenciamento
+│       │   └── usuario
+│       ├── frontend        # Interface Swing
+│       └── inicio          # Ponto de entrada (MedAlerta)
 └── test
     └── java
-        ├── backend         # Testes Unitários (focados no isolamento da lógica)
-        ├── backend/integracao # Testes de Integração (validam a comunicação entre os módulos)
-        └── frontend        # Testes de Sistema/GUI (usando AssertJ Swing)
+        ├── backend         # Testes unitários
+        ├── backend/integracao
+        └── frontend        # Testes E2E / GUI (AssertJ Swing)
 ```
 
 ## • Instruções de Execução e Teste
@@ -74,11 +75,11 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 
 | Comando | Descrição |
 |---------|-----------|
-| `mvn clean test` | Limpa os artefatos de builds anteriores e roda os Testes Unitários (Surefire). |
-| `mvn clean verify` | Executa o fluxo completo: testes unitários, testes de integração e geração de relatórios (JaCoCo/PIT). |
-| `mvn clean install` | Realiza a compilação, execução dos testes e empacotamento, salvando o `.jar` no repositório local. |
-| `mvn clean verify sonar:sonar` | Transmite as métricas de qualidade e cobertura para o servidor SonarQube (exige servidor ativo). |
-| `mvn org.pitest:pitest-maven:mutationCoverage` | Roda os Testes de Mutação para avaliar a força e robustez da suíte de testes existente. |
+| `mvn clean test` | Compila o projeto, executa todos os testes (unitários, integração e GUI) via Surefire e gera relatório JaCoCo em `target/site/jacoco/`. |
+| `mvn clean verify` | Igual ao `test`, com fase `verify` do Maven (sem PIT automático). |
+| `mvn clean install` | Compila, executa os testes e empacota o artefato no repositório local Maven. |
+| `mvn org.pitest:pitest-maven:mutationCoverage` | Roda testes de mutação (PIT) nas classes configuradas no `pom.xml`. |
+| `mvn clean test jacoco:report sonar:sonar` | Envia análise ao SonarQube local (requer servidor em `localhost:9000`, ex.: via Docker). |
 
 ### Entendendo os Níveis de Teste
 
@@ -88,7 +89,7 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 
 **Testes de Integração** (`src/test/java/backend/integracao`):
 - Garantem que a comunicação entre os componentes reais funcione corretamente (ex: Persistência de Pessoa em arquivos, integração entre Farmácia e Estoque).
-- São executados durante a fase de `verify` ou `integration-test` do Maven.
+- Executados junto com os demais testes em `mvn clean test` (Surefire).
 
 **Testes de Sistema/GUI** (`src/test/java/frontend`):
 - Empregam o AssertJ Swing para emular interações reais do usuário, como cliques e preenchimento de formulários na interface.
@@ -106,24 +107,39 @@ Abaixo listamos os comandos principais configurados no arquivo `pom.xml` para ge
 
 ### Primeira Entrega
 
-- [**Template Base do Plano de Testes**](./docs/PLANO_DE_TESTE.md)
+- [**Plano de Testes**](./docs/PLANO_DE_TESTE.md) ([Google Docs](https://docs.google.com/document/d/1bwteCF50jB--BLISjtX2zsVKDJhSQqzDmmCRV9LKiVg/edit?tab=t.0))
 - [**Testes Manuais Realizados**](./docs/testes_manuais/)
 - [**Especificação do Trabalho**](./docs/TRABALHO.md)
-- [**Plano de Testes**](./docs/PLANO_DE_TESTE.md) ou (https://docs.google.com/document/d/1bwteCF50jB--BLISjtX2zsVKDJhSQqzDmmCRV9LKiVg/edit?tab=t.0)
 - [**Testes Unitários Realizados**](./src/test/java/backend)
 - [**Código Fonte Original**](https://github.com/valescamoura/MedAlertaV2)
-- [**Apresentação**](./docs/Apresentação.pptx) ou (https://www.canva.com/design/DAHIAdlNSxg/wzmCGUJDJfVMAX8ZBiv2qg/edit)
+- [**Apresentação**](./docs/Apresentação.pptx) ([Canva](https://www.canva.com/design/DAHIAdlNSxg/wzmCGUJDJfVMAX8ZBiv2qg/edit))
+- [**Issues registradas**](https://github.com/vaniacourses/trabalho-qualidade-e-teste-grupo-5/issues)
+- [**TestLink**](http://vania.ic.uff.br/testlink/) — plano de teste **TEP: Teste em produção** (responsável: Gabriel)
 
-#### Segunda Entrega
+### Segunda Entrega
 
 - [**Divisão de classes por integrante (Entrega 2)**](./docs/DIVISAO_CLASSES_ENTREGA2.md)
 - [**Atributos Prioritários da ISO/IEC 25010 (Entrega 2)**](./docs/ATRIBUTOS_DE_QUALIDADE_PRIORITARIOS_ISO_25010.md)
 - [**Testes Funcionais (Entrega 2)**](./docs/TESTES_FUNCIONAIS.md)
+- [**Uso de agentes de IA no projeto**](./docs/USO_DE_AGENTES_IA.md)
+- [**Issues registradas**](https://github.com/vaniacourses/trabalho-qualidade-e-teste-grupo-5/issues)
+- **Inspeção SonarQube** — responsabilidade **compartilhada** da equipe; evidências na [**Apresentação Entrega 2**](https://canva.link/aop9a2ac2q3hgo9)
 - **Alexandre Colmenero** — classe `Uso` (`backend.usuario`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `UsoTest` + teste E2E `CadastroMedicamentoE2ETest`
-- **Gabriel Soares** — classe `Data` (`backend.gerenciamento`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `DataTest`
+- **Gabriel Soares** — classe `Data` (`backend.gerenciamento`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `DataTest` + teste E2E `InicioE2ETest`
+- **Leonardo Carvalho** — classe `Agenda` (`backend`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `AgendaTest` + teste E2E `AgendaContatoMedicoE2ETest`
 - **Mateus Magalhães** — classe `PessoaFisica` (`backend.usuario`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `PessoaFisicaTest` + teste funcional E2E `FluxoCadastroLoginE2ETest` (**CT-CE-03** — técnica *Grafo Causa-Efeito*)
-- **Sandro Teixeira** — classe `FuncoesArquivos` (`backend`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `FuncoesArquivosTest` + teste E2E `CadastroFarmaciaE2ETest`
-- [**Apresentação**]()
+- **Sandro Henrique** — classe `FuncoesArquivos` (`backend`): testes estruturais (JaCoCo ≥ 80% branches) e mutação (PIT ≥ 80%) em `FuncoesArquivosTest` + teste E2E `CadastroFarmaciaE2ETest`
+- [**Apresentação Entrega 2**](https://canva.link/aop9a2ac2q3hgo9)
+
+### Testes complementares (RNF e suporte)
+
+| Teste | Tipo | Responsável |
+|-------|------|-------------|
+| `EntrarPessoaSegurancaTest` | RNF Segurança (CT-CE-01) | Gabriel Soares |
+| `EstresseMultiUsuarioTest` | RNF Estresse (concorrência) | Gabriel Soares |
+| `InicioUsabilidadeTest` | RNF Usabilidade | Gabriel Soares |
+| `CadastroPessoaE2ETest` / `CadastroPessoaValidacaoE2ETest` | E2E cadastro pessoa | Mateus Magalhães |
+| `EntrarFarmaciaE2ETest` | E2E login farmácia | Sandro Henrique |
 
 
 ## © Créditos e Histórico

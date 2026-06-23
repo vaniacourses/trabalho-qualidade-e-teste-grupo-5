@@ -4,7 +4,7 @@ Este documento sugere **uma classe por integrante** para cumprir os itens da Ent
 
 1. **Teste estrutural** — ≥ 80% cobertura de **branches** (critério todas-arestas)
 2. **Teste baseado em defeitos** — ≥ 80% **mutation score** (PIT) na **mesma classe**
-3. **Inspeção Sonar** — corrigir problemas em ≥ 1 classe não-CRUD com complexidade razoável (pode ser a mesma ou outra)
+3. **Inspeção Sonar** — cada integrante corrige issues em ≥ 1 classe; a **evidência** (prints e resultados) é **compartilhada** e consta na [Apresentação Entrega 2](https://canva.link/aop9a2ac2q3hgo9)
 4. **Teste E2E (sistema)** — **pelo menos um** teste ponta a ponta por integrante (Selenium ou similar)
 
 > Fonte dos requisitos: [`TRABALHO.md`](./TRABALHO.md)  
@@ -14,17 +14,21 @@ Este documento sugere **uma classe por integrante** para cumprir os itens da Ent
 
 O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equivalente a *“Selenium ou similar”* adotado no repositório é o **AssertJ Swing**, com suíte em `src/test/java/frontend/`. Cada integrante deve implementar ou manter **ao menos uma classe de teste E2E** nesse pacote, exercitando um requisito funcional completo pela interface (menu → telas → resultado esperado).
 
+### Inspeção SonarQube (equipe)
+
+A análise com SonarQube e as evidências de inspeção (antes/depois das correções) são **responsabilidade compartilhada do repositório**, não de pastas ou prints individuais no GitHub. Os registros visuais estão na [**Apresentação Entrega 2**](https://canva.link/aop9a2ac2q3hgo9). Cada integrante continua responsável por corrigir issues na **sua** classe sob teste.
+
 ---
 
 ## Resumo da divisão
 
 | Integrante | GitHub | Classe (backend) | Teste unitário/estrutural | Cenário E2E sugerido | Classe E2E (`src/test/java/frontend/`) |
 |------------|--------|------------------|----------------------------|----------------------|---------------------------------------|
-| Alexandre Colmenero | [@alexandrelimaxs](https://github.com/alexandrelimaxs) | `Uso` | `backend/usuario/UsoTest.java` | Cadastro de medicamento após login ([TM-04](./testes_manuais/TM-04-cadastro-de-medicamentos.md)) | `CadastroMedicamentoE2ETest.java` *(criar)* |
+| Alexandre Colmenero | [@alexandrelimaxs](https://github.com/alexandrelimaxs) | `Uso` | `backend/usuario/UsoTest.java` | Cadastro de medicamento após login ([TM-04](./testes_manuais/TM-04-cadastro-de-medicamentos.md)) | `CadastroMedicamentoE2ETest.java` |
 | Gabriel Soares | [@Gabriel-HS](https://github.com/Gabriel-HS) | `Data` | `backend/gerenciamento/DataTest.java` | Login de pessoa com credenciais válidas ([TM-02](./testes_manuais/TM-02-autentica-o-de-usu-rio-pessoa-.md)) | `InicioE2ETest.java` |
-| Leonardo Carvalho | [@leonardocfonseca](https://github.com/leonardocfonseca) | `Agenda` | `backend/AgendaTest.java` | Adicionar contato médico na agenda ([TM-03](./testes_manuais/TM-03-adicionar-contato-m-dico.md)) | `AgendaContatoMedicoE2ETest.java` *(criar)* |
-| Mateus Magalhães | [@MGLHS](https://github.com/MGLHS) | `PessoaFisica` | `backend/usuario/PessoaFisicaTest.java` | Cadastro completo + login com as mesmas credenciais ([TM-05](./testes_manuais/TM-05-cadastro-de-usu-rio-como-pesso.md) / [TM-07](./testes_manuais/TM-07-cadastro-de-usu-rio-como-pesso.md)) | `FluxoCadastroLoginE2ETest.java` *(criar)* |
-| Sandro Henrique | [@sandrohmt](https://github.com/sandrohmt) | `FuncoesArquivos` | `backend/FuncoesArquivosTest.java` *(criar)* + integração | Cadastro de farmácia pela interface ([TM-08](./testes_manuais/TM-08-cadastro-de-farmacia.md) / [TM-09](./testes_manuais/TM-09-cadastro-de-farmacia-sem-cnpj.md)) | `CadastroFarmaciaE2ETest.java` *(criar)* |
+| Leonardo Carvalho | [@leonardocfonseca](https://github.com/leonardocfonseca) | `Agenda` | `backend/AgendaTest.java` | Adicionar contato médico na agenda ([TM-03](./testes_manuais/TM-03-adicionar-contato-m-dico.md)) | `AgendaContatoMedicoE2ETest.java` |
+| Mateus Magalhães | [@MGLHS](https://github.com/MGLHS) | `PessoaFisica` | `backend/usuario/PessoaFisicaTest.java` | Cadastro completo + login com as mesmas credenciais ([TM-05](./testes_manuais/TM-05-cadastro-de-usu-rio-como-pesso.md) / [TM-07](./testes_manuais/TM-07-cadastro-de-usu-rio-como-pesso.md)) | `FluxoCadastroLoginE2ETest.java` |
+| Sandro Henrique | [@sandrohmt](https://github.com/sandrohmt) | `FuncoesArquivos` | `backend/FuncoesArquivosTest.java` + integração | Cadastro de farmácia pela interface ([TM-08](./testes_manuais/TM-08-cadastro-de-farmacia.md) / [TM-09](./testes_manuais/TM-09-cadastro-de-farmacia-sem-cnpj.md)) | `CadastroFarmaciaE2ETest.java` |
 
 ---
 
@@ -37,16 +41,16 @@ O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equiva
 - Não é entidade CRUD pura — combina regras de dose, intervalo e horários.
 - Já é alvo do PIT no `pom.xml` (`backend.usuario.Uso` / `UsoTest`).
 
-**Estado atual (aproximado):**
-- Pacote `backend.usuario`: ~47% branches no JaCoCo.
-- Vários testes em `UsoTest` ainda falham (código ou teste precisam alinhar).
+**Estado atual:**
+- Classe alvo do PIT no `pom.xml` (`backend.usuario.Uso` / `UsoTest`).
+- Confirmar cobertura de branches ≥ 80% no relatório JaCoCo.
 
 **Entregas do integrante:**
-- [ ] Corrigir/alinhar testes estruturais até **≥ 80% branches** em `Uso` (JaCoCo).
-- [ ] Atingir **≥ 80% mutation score** no PIT para `Uso`.
-- [ ] Print Sonar antes/depois (classe `Uso` ou outra à escolha).
-- [ ] **E2E:** implementar `CadastroMedicamentoE2ETest.java` — fluxo login → cadastro de medicamento → confirmação na interface.
-- [ ] Documentar responsabilidade no README / Plano de Teste.
+- [ ] Confirmar **≥ 80% branches** em `Uso` (JaCoCo).
+- [ ] Confirmar **≥ 80% mutation score** no PIT para `Uso`.
+- [ ] Corrigir issues Sonar na classe `Uso` (evidências na apresentação do grupo).
+- [x] **E2E:** `CadastroMedicamentoE2ETest.java` — fluxo login → cadastro de medicamento → confirmação na interface.
+- [x] Documentar responsabilidade no README / Plano de Teste.
 
 **Ramos prioritários a cobrir:** `calcularHorariosDeUso` (`intervalo == 0` vs loop), setters com validação, `stringToUso` / `toString`.
 
@@ -61,15 +65,14 @@ O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equiva
 - Complexidade ciclomática adequada (`formatarDia`, `verificarHora`, `verificarDia`, `ehMeiaNoite`).
 - Já é alvo do PIT no `pom.xml` (`backend.gerenciamento.Data` / `DataTest`).
 
-**Estado atual (aproximado):**
-- Pacote `backend.gerenciamento`: ~33% branches no JaCoCo.
-- 3 testes falhando em `DataTest` (bloqueiam o PIT).
+**Estado atual:**
+- Classe alvo do PIT no `pom.xml` (`backend.gerenciamento.Data` / `DataTest`).
 
 **Entregas do integrante:**
 - [x] Testes estruturais cobrindo todos os `case` de `formatarDia` e ramos de `verificarHora` / `verificarDia`.
 - [x] **≥ 80% branches** em `Data`.
 - [x] **≥ 80% mutation score** no PIT.
-- [x] Print Sonar antes/depois.
+- [x] Correções Sonar na classe `Data` (evidências na apresentação do grupo).
 - [x] **E2E:** implementar `InicioE2ETest.java` — menu → login pessoa → home com usuário autenticado.
 
 **Ramos prioritários:** segunda chamada de `verificarHora`, entrada inválida em `formatarDia`, `verificarDia(null)`.
@@ -85,16 +88,15 @@ O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equiva
 - Não é entidade — é serviço de domínio com busca, ordenação e persistência indireta.
 - Já possui suíte grande (`AgendaTest`, ~24 testes).
 
-**Estado atual (aproximado):**
-- Pacote `backend` agregado em ~84% branches (várias classes); `Agenda` individual precisa ser confirmada no relatório HTML.
-- Alguns testes de `AgendaTest` ainda falham.
+**Estado atual:**
+- Classe alvo do PIT no `pom.xml` (`backend.Agenda` / `AgendaTest`).
+- Suíte em `AgendaTest` (~24 testes) e E2E em `AgendaContatoMedicoE2ETest`.
 
 **Entregas do integrante:**
-- [ ] Confirmar no JaCoCo a cobertura **da classe `Agenda`** (não só do pacote).
-- [ ] Levar `Agenda` a **≥ 80% branches**.
-- [ ] Adicionar `Agenda` ao `pitest-maven-plugin` no `pom.xml` e atingir **≥ 80% mutação**.
-- [ ] Print Sonar antes/depois.
-- [ ] **E2E:** implementar `AgendaContatoMedicoE2ETest.java` — login → adicionar médico (nome, telefone, especialidade) → contato visível na agenda.
+- [ ] Confirmar **≥ 80% branches** em `Agenda` (JaCoCo).
+- [ ] Confirmar **≥ 80% mutation score** no PIT para `Agenda`.
+- [ ] Corrigir issues Sonar na classe `Agenda` (evidências na apresentação do grupo).
+- [x] **E2E:** `AgendaContatoMedicoE2ETest.java` — login → adicionar médico → contato visível na agenda.
 
 **Ramos prioritários:** contato não encontrado vs encontrado, `stringToAgenda` (`usuario` / `farmacia` / `medico`), agenda vazia em `toString`.
 
@@ -109,16 +111,15 @@ O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equiva
 - Muitos desvios condicionais e integração com `Uso` e `FuncoesArquivos`.
 - Já existe `PessoaFisicaTest` (~22 testes) e testes de integração.
 
-**Estado atual (aproximado):**
-- Vários testes falhando em `PessoaFisicaTest` e integração.
-- PIT ainda **não** inclui esta classe no `pom.xml`.
+**Estado atual:**
+- Classe alvo do PIT no `pom.xml` (`backend.usuario.PessoaFisica` / `PessoaFisicaTest`).
+- E2E em `FluxoCadastroLoginE2ETest` (caso **CT-CE-03**).
 
 **Entregas do integrante:**
-- [ ] Expandir/refinar testes unitários com **Mockito** para isolar I/O de arquivo.
-- [ ] **≥ 80% branches** em `PessoaFisica`.
-- [ ] Configurar PIT para `PessoaFisica` / `PessoaFisicaTest` e atingir **≥ 80% mutação**.
-- [ ] Print Sonar antes/depois.
-- [ ] **E2E:** implementar `FluxoCadastroLoginE2ETest.java` — cadastro na interface → novo acesso → login com credenciais recém-criadas → home autenticada.
+- [ ] Confirmar **≥ 80% branches** em `PessoaFisica` (JaCoCo).
+- [ ] Confirmar **≥ 80% mutation score** no PIT para `PessoaFisica`.
+- [ ] Corrigir issues Sonar na classe `PessoaFisica` (evidências na apresentação do grupo).
+- [x] **E2E:** `FluxoCadastroLoginE2ETest.java` — cadastro → login → home autenticada.
 
 **Ramos prioritários:** resgate de arquivo, atualização/remoção de usos, validações de lista nula, caminhos de autenticação.
 
@@ -131,19 +132,18 @@ O MedAlerta é uma aplicação **Swing (desktop)**, não web. Por isso, o equiva
 **Por que esta classe?**
 - Utilitário de **I/O com alta complexidade**: muitos métodos com `try/catch`, loops, `if/else` (criar, ler, alterar, checar existência).
 - Não é entidade CRUD — é camada de persistência.
-- Hoje só há testes de **integração**; faltam testes unitários dedicados (com arquivos temporários).
+- Possui `FuncoesArquivosTest` (unitário) e `FuncoesArquivosIntegracaoTest`.
 
-**Estado atual (aproximado):**
-- Cobertura baixa em métodos não exercitados pelos testes de integração.
-- PIT ainda **não** inclui esta classe.
+**Estado atual:**
+- `FuncoesArquivosTest.java` e `FuncoesArquivosIntegracaoTest` existem.
+- **Pendente:** incluir `FuncoesArquivos` no `pitest-maven-plugin` do `pom.xml`.
+- E2E em `CadastroFarmaciaE2ETest`.
 
 **Entregas do integrante:**
-- [ ] Criar `FuncoesArquivosTest.java` em `src/test/java/backend/` (unitário).
-- [ ] Manter/ajustar `FuncoesArquivosIntegracaoTest` se necessário.
-- [ ] **≥ 80% branches** em `FuncoesArquivos`.
-- [ ] Configurar PIT e atingir **≥ 80% mutação**.
-- [ ] Print Sonar antes/depois (classe com muitos code smells de `printStackTrace` — boa para inspeção).
-- [ ] **E2E:** implementar `CadastroFarmaciaE2ETest.java` — menu → cadastro de farmácia → confirmação na interface (caminho feliz e, se possível, validação sem CNPJ).
+- [ ] Confirmar **≥ 80% branches** em `FuncoesArquivos` (JaCoCo).
+- [ ] Incluir classe no PIT e atingir **≥ 80% mutação**.
+- [ ] Corrigir issues Sonar em `FuncoesArquivos` (evidências na apresentação do grupo).
+- [x] **E2E:** `CadastroFarmaciaE2ETest.java` — cadastro de farmácia (caminho feliz e validação sem CNPJ).
 
 **Ramos prioritários:** arquivo existe vs não existe, linha encontrada em `alterarLinhaArquivo`, exceções de I/O, `checarExistenciaNomeArquivo`.
 
@@ -180,12 +180,18 @@ open target/pit-reports/*/index.html
 mvn test -Dtest=frontend.<SuaClasseE2E>Test
 # ou toda a suíte de frontend:
 mvn test -Dtest=frontend.*Test
-
-# Sonar
-mvn clean verify sonar:sonar
 ```
 
-**Atenção:** o `pom.xml` hoje só configura PIT para `Uso` e `Data`. Cada integrante das classes `Agenda`, `PessoaFisica` e `FuncoesArquivos` precisará **incluir sua classe** em `<targetClasses>` e `<targetTests>` do `pitest-maven-plugin`.
+**Atenção:** o `pom.xml` configura PIT para `Uso`, `Data`, `Agenda` e `PessoaFisica`. A classe `FuncoesArquivos` ainda precisa ser incluída em `<targetClasses>` e `<targetTests>` do `pitest-maven-plugin`.
+
+### Testes complementares (fora da classe principal)
+
+| Integrante | Testes adicionais |
+|------------|-------------------|
+| Gabriel | `EntrarPessoaSegurancaTest`, `EstresseMultiUsuarioTest`, `InicioUsabilidadeTest` |
+| Mateus | `CadastroPessoaE2ETest`, `CadastroPessoaValidacaoE2ETest` |
+| Sandro | `EntrarFarmaciaE2ETest` |
+| Leonardo | CT-CE-02 em `AgendaTest` (unitário) |
 
 ### Critérios mínimos do teste E2E (por integrante)
 
@@ -214,11 +220,7 @@ mvn clean verify sonar:sonar
 |----------|------------|------|
 | Todas-arestas | JaCoCo (Branches) | ≥ 80% na **sua** classe |
 | Baseada em defeitos | PIT (Mutation Score) | ≥ 80% na **mesma** classe |
-| Inspeção | SonarQube | Print antes + depois das correções |
+| Inspeção | SonarQube | Correções por integrante na sua classe; evidências na [Apresentação Entrega 2](https://canva.link/aop9a2ac2q3hgo9) |
 | Teste E2E | AssertJ Swing (similar ao Selenium) | **≥ 1** teste de sistema por integrante |
 | Complexidade | Análise estática / manual | CC ≥ 10 na classe sob teste |
 | Tipo de classe | — | Não-CRUD (não só getters/setters) |
-
----
-
-*Documento sugerido pela equipe — ajuste a divisão em conjunto e valide com a professora se alguma classe for considerada entidade simples.*

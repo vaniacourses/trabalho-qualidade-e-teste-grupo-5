@@ -9,96 +9,122 @@ Este teste valida a classe de "Dados Completos e Corretos".
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-EQ-01 |
+| **Responsável** | Sandro Henrique |
 | **Nome do Cenário** | Cadastro de Farmácia com Sucesso (Fluxo Feliz) |
-| **Origem no Código** | `frontend.FarmaciaCadastroTest -> deveCadastrarFarmaciaComSucessoEAbirHome` |
-| **Pré-condições** | O arquivo `RegistroFarmacias.txt` deve estar limpo ou inexistente. A aplicação deve estar na tela de Login de Farmácia. |
-| **Dados de Entrada** | - Email: "nova.farmacia@teste.com"<br>- Senha: "senhaSegura123"<br>- Nome: "Farmacia Nova Vida"<br>- CNPJ: "12345678000100"<br>- Endereço: "Avenida Paulista", "1578" |
-| **Passos de Execução** | 1. Preencher todos os campos de texto com os dados de entrada.<br>2. Clicar no botão "Prox." (`botaoCadastrar`). |
-| **Resultado Esperado** | A janela atual deve fechar e a janela `HomeDaFarmacia` deve se tornar visível. |
+| **Origem no Código** | `frontend.CadastroFarmaciaE2ETest -> fluxoCadastroFarmacia_comDadosValidos_deveCriarEEntrarNaHome` |
+| **Pré-condições** | Arquivo de farmácias limpo ou inexistente. Menu inicial aberto. |
+| **Dados de Entrada** | - Email: "farmacia@e2e.com"<br>- Senha: "senha123"<br>- Nome: "Farmácia E2E"<br>- CNPJ: "12345678000199"<br>- Telefone: "11988887777"<br>- Endereço: "Rua das Flores", "123", complemento "Loja 1" |
+| **Passos de Execução** | 1. Menu → cadastro de farmácia.<br>2. Preencher todos os campos.<br>3. Clicar em "Prox." |
+| **Resultado Esperado** | A janela `HomeDaFarmacia` deve ficar visível. |
 
-### Caso de Teste 02: Validação de Campos Obrigatórios (Classe Inválida)
-Este teste valida a classe de "Dados Faltantes ou Vazios".
+### Caso de Teste 02: Cadastro sem CNPJ (Classe Inválida)
+Este teste valida a classe de "Campo obrigatório ausente (CNPJ)".
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-EQ-02 |
-| **Nome do Cenário** | Tentativa de cadastro com campos vazios |
-| **Origem no Código** | `frontend.FarmaciaCadastroTest -> deveExibirErroComCamposObrigatoriosVazios` |
-| **Pré-condições** | Aplicação na tela de Login de Farmácia. |
-| **Dados de Entrada** | - Email: "incompleto@teste.com"<br>- Senha: (Vazio)<br>- Nome: (Vazio)<br>- CNPJ: (Vazio) |
-| **Passos de Execução** | 1. Preencher apenas o campo Email.<br>2. Deixar os demais campos em branco.<br>3. Clicar no botão "Prox." (`botaoCadastrar`). |
-| **Resultado Esperado** | O sistema deve exibir um `JOptionPane` com a mensagem de erro: "Precisa preencher todas as opções corretamente!". |
+| **Responsável** | Sandro Henrique |
+| **Nome do Cenário** | Cadastro de farmácia sem CNPJ |
+| **Origem no Código** | `frontend.CadastroFarmaciaE2ETest -> fluxoCadastroFarmacia_semCNPJ_deveExibirErro` |
+| **Pré-condições** | Menu inicial aberto. |
+| **Dados de Entrada** | - Email: "farmaciaerro@e2e.com"<br>- Senha: "senha123"<br>- Nome: "Farmácia Erro"<br>- CNPJ: *(vazio)*<br>- Demais campos preenchidos |
+| **Passos de Execução** | 1. Preencher todos os campos **exceto** CNPJ.<br>2. Clicar em "Prox." |
+| **Resultado Esperado** | `JOptionPane` com: "Precisa preencher todas as opções corretamente!". |
 
 ## 2. Técnica: Análise do Valor Limite (Boundary Value Analysis)
 **Conceito:** Testar os extremos (limites) das variáveis, onde erros são mais frequentes (ex: 0, -1, valor máximo).
 
-### Caso de Teste 03: Duração do Tratamento Zerada (Limite Inferior)
-Este teste verifica o comportamento do sistema quando um contador atinge seu limite inferior (0).
+### Caso de Teste 03: Dose Zerada (Limite Inferior Válido)
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-AVL-01 |
-| **Nome do Cenário** | Finalização de tratamento (Duração chega a 0) |
-| **Origem no Código** | `backend.gerenciamento.GerenciadorTest -> naoAtualizaArquivoSeDuracaoZeroTest` |
-| **Pré-condições** | Um objeto Uso (medicamento) deve existir. |
-| **Dados de Entrada** | - Duração do Tratamento: 0 (Limite inferior) |
-| **Passos de Execução** | 1. O Gerenciador executa a verificação de rotina (`atualizarDuracaoDeUso`).<br>2. O sistema verifica o valor da duração. |
-| **Resultado Esperado** | O sistema NÃO deve decrementar o valor (para -1) e NÃO deve chamar a função de escrita no arquivo, pois o tratamento já acabou. |
+| **Responsável** | Alexandre Colmenero |
+| **Nome do Cenário** | Definição de dose zero (limite inferior válido) |
+| **Origem no Código** | `backend.usuario.UsoTest -> setDose_zero_deveSerAceita` |
+| **Pré-condições** | Instância da classe `Uso`. |
+| **Dados de Entrada** | - Dose: 0 |
+| **Passos de Execução** | 1. Definir a dose como 0. |
+| **Resultado Esperado** | Valor aceito sem exceção. |
 
 ### Caso de Teste 04: Validação de Dose Negativa (Limite Inválido)
-Este teste verifica a rejeição de valores logo abaixo do limite permitido.
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-AVL-02 |
+| **Responsável** | Alexandre Colmenero |
 | **Nome do Cenário** | Definição de dose negativa |
-| **Origem no Código** | `backend.usuario.UsoTest -> testSetDoseInvalida` |
-| **Pré-condições** | Instância da classe Uso. |
-| **Dados de Entrada** | - Dose: -1 (Valor imediatamente abaixo do limite 0) |
-| **Passos de Execução** | 1. Tentar definir a dose do medicamento como -1. |
-| **Resultado Esperado** | O sistema deve lançar uma `IllegalArgumentException` com a mensagem: "Não é possível setar número negativo para dose.". |
+| **Origem no Código** | `backend.usuario.UsoTest -> setDose_negativa_deveLancarExcecao` |
+| **Pré-condições** | Instância da classe `Uso`. |
+| **Dados de Entrada** | - Dose: -1 |
+| **Passos de Execução** | 1. Tentar definir dose -1. |
+| **Resultado Esperado** | `IllegalArgumentException`: "Não é possível setar número negativo para dose.". |
 
 ## 3. Técnica: Grafo Causa-Efeito (Lógica Booleana)
 **Conceito:** Verificar combinações lógicas de entradas (Causas) que levam a um resultado (Efeito).
-**Regra de Negócio:** Login = (Email Existe E Senha Correta).
 
 ### Caso de Teste 05: Login com Credenciais Inválidas (Combinação Falsa)
-Testa a combinação: [Email Correto] E [Senha Incorreta] -> Efeito: Falha.
+**Regra:** Login = (Email Existe **E** Senha Correta). Testa email válido **E** senha incorreta → falha.
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-CE-01 |
-| **Nome do Cenário** | Falha de Login com senha incorreta |
-| **Origem no Código** | `frontend.PessoaEntrarTest -> deveExibirErroComCredenciaisInvalidas` |
-| **Pré-condições** | Aplicação na tela `EntrarPessoa`. |
-| **Dados de Entrada** | - Email: "Testedefalha@teste.com" (Formato válido)<br>- Senha: "senhaerrada" (Incorreta) |
-| **Passos de Execução** | 1. Inserir email.<br>2. Inserir senha incorreta.<br>3. Clicar no botão "Prox." (`botaoEntrar`). |
-| **Resultado Esperado** | O sistema deve exibir mensagem de erro: "Erro, email ou senha incorretos!". |
+| **Responsável** | Gabriel Soares |
+| **Nome do Cenário** | Falha de login com credenciais inválidas |
+| **Origem no Código** | `frontend.EntrarPessoaSegurancaTest -> loginComCredenciaisInvalidas_deveNegarAcessoEMostrarErro` |
+| **Pré-condições** | Menu inicial → tela `EntrarPessoa`. |
+| **Dados de Entrada** | - Email: "invalido@teste.com"<br>- Senha: "senhaErrada" |
+| **Passos de Execução** | 1. Preencher email e senha.<br>2. Clicar em "Prox." |
+| **Resultado Esperado** | Diálogo "Erro, email ou senha incorretos!"; usuário permanece na tela de login. |
 
-### Caso de Teste 06: Recuperação de Arquivo (Combinação Verdadeira)
-Testa a combinação: [Email Correto] E [Senha Correta] -> Efeito: Sucesso (Objeto Retornado).
+### Caso de Teste 06: Carregar médico na agenda (Combinação Verdadeira — unitário)
+**Regra:** Contato médico = (Email Existe **E** Senha Correta **E** tipo `"medico"`) → médico na agenda.
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-CE-02 |
-| **Nome do Cenário** | Recuperação de Médico com credenciais válidas |
-| **Origem no Código** | `backend.usuario.UsuarioMedicoTest -> testResgatarMedicoComSucesso` |
-| **Pré-condições** | Arquivo `RegistroMedicos.txt` contendo a linha simulada: "Dr. Bernardo,21...,bernardo@hospital.com,senha123,Cirurgiao". |
-| **Dados de Entrada** | - Email: "bernardo@hospital.com"<br>- Senha: "senha123" |
-| **Passos de Execução** | 1. O método `resgatarMedicoArquivo` é chamado com os dados de entrada. |
-| **Resultado Esperado** | O sistema deve retornar um objeto Medico não nulo, com o nome "Dr. Bernardo" e especialidade "Cirurgiao". |
+| **Responsável** | Leonardo Carvalho |
+| **Tipo** | Teste **unitário** (não E2E) — classe `Agenda` |
+| **Nome do Cenário** | `stringToAgenda` com credenciais de médico válidas |
+| **Origem no Código** | `backend.AgendaTest -> testStringToAgenda` |
+| **Pré-condições** | Mock de `Medico.resgatarMedicoArquivo` retornando médico de teste. |
+| **Dados de Entrada** | - Email: "medicoandre@gmail.com"<br>- Senha: "321"<br>- Tipo: `"medico"` |
+| **Passos de Execução** | 1. Chamar `Agenda.stringToAgenda(..., "medico", ...)`. |
+| **Resultado Esperado** | Agenda contém o `Medico` resgatado. |
 
 ### Caso de Teste 07: Cadastro seguido de Login (Combinação Verdadeira — E2E)
-Testa a combinação: [Cadastro Completo e Válido] E [Email Existe no Arquivo] E [Senha Correta] → Efeito: Acesso autenticado na Home.
-Alinhado ao teste manual [TM-05](../testes_manuais/TM-05-cadastro-de-usu-rio-como-pesso.md).
 
 | Campo | Descrição |
 | :--- | :--- |
 | **ID do Caso de Teste** | CT-CE-03 |
-| **Técnica** | Grafo Causa-Efeito (Lógica Booleana) |
-| **Nome do Cenário** | Cadastro de pessoa seguido de login com as credenciais recém-criadas |
+| **Responsável** | Mateus Magalhães |
+| **Nome do Cenário** | Cadastro de pessoa seguido de login com credenciais recém-criadas |
 | **Origem no Código** | `frontend.FluxoCadastroLoginE2ETest -> cadastroSeguidoDeLogin_deveAutenticarComCredenciaisCriadas` |
-| **Pré-condições** | O arquivo de usuários (`RegistroUsuarios.txt`) deve estar vazio ou inexistente. A aplicação deve estar no menu inicial. |
-| **Dados de Entrada** | - Nome: "Fluxo E2E"<br>- CPF: "55566677788"<br>- Email: "fluxo.e2e@test.com"<br>- Senha: "senhaFluxo123"<br>- Telefone: "21911112222"<br>- Endereço: "Rua Fluxo", "100", "Casa" |
-| **Passos de Execução** | 1. Abrir o menu inicial e navegar para a tela de cadastro de pessoa (`LoginPessoa`).<br>2. Preencher todos os campos com os dados de entrada.<br>3. Clicar no botão "Prox." e verificar que o usuário foi persistido no arquivo.<br>4. Reabrir o menu inicial e navegar para a tela de login (`EntrarPessoa`).<br>5. Preencher email e senha com as credenciais criadas no cadastro.<br>6. Clicar no botão "Prox." e aguardar o fechamento da tela de login.<br>7. Abrir a tela `Home` com o usuário autenticado e verificar os dados exibidos. |
-| **Resultado Esperado** | O usuário deve ser salvo no arquivo após o cadastro. O login deve fechar a tela `EntrarPessoa`. A `Home` deve exibir o nome "Fluxo E2E", o CPF "55566677788" e o botão "Meus remédios". |
+| **Teste manual** | [TM-05](../testes_manuais/TM-05-cadastro-de-usu-rio-como-pesso.md) |
+| **Pré-condições** | `RegistroUsuarios.txt` vazio. Menu inicial. |
+| **Dados de Entrada** | Nome "Fluxo E2E", CPF "55566677788", email "fluxo.e2e@test.com", senha "senhaFluxo123", telefone "21911112222", endereço "Rua Fluxo"/"100"/"Casa" |
+| **Passos de Execução** | Cadastro → persistência → novo login → abrir `Home`. |
+| **Resultado Esperado** | Usuário salvo; `Home` exibe nome, CPF e botão "Meus remédios". |
+
+---
+
+## 4. Testes E2E adicionais (rastreabilidade)
+
+| Classe de teste | Responsável | Cenário |
+|-----------------|-------------|---------|
+| `InicioE2ETest` | Gabriel Soares | Login pessoa com credenciais válidas ([TM-02](../testes_manuais/TM-02-autentica-o-de-usu-rio-pessoa-.md)) |
+| `CadastroMedicamentoE2ETest` | Alexandre Colmenero | Cadastro de medicamento após login ([TM-04](../testes_manuais/TM-04-cadastro-de-medicamentos.md)) |
+| `AgendaContatoMedicoE2ETest` | Leonardo Carvalho | Adicionar contato médico ([TM-03](../testes_manuais/TM-03-adicionar-contato-m-dico.md)) |
+| `CadastroPessoaE2ETest` | Mateus Magalhães | Cadastro completo de pessoa |
+| `CadastroPessoaValidacaoE2ETest` | Mateus Magalhães | Validação de campos obrigatórios no cadastro |
+| `EntrarFarmaciaE2ETest` | Sandro Henrique | Login de farmácia (válido e inválido) |
+
+---
+
+## 5. Testes de requisitos não funcionais
+
+| Classe | RNF | Responsável | Origem |
+|--------|-----|-------------|--------|
+| `EstresseMultiUsuarioTest` | Estresse (múltiplos usuários concorrentes) | Gabriel Soares | `src/test/java/backend/EstresseMultiUsuarioTest.java` |
+| `EntrarPessoaSegurancaTest` | Segurança (CT-CE-01) | Gabriel Soares | Caso 05 acima |
+| `InicioUsabilidadeTest` | Usabilidade (opções visíveis no menu) | Gabriel Soares | `src/test/java/frontend/InicioUsabilidadeTest.java` |

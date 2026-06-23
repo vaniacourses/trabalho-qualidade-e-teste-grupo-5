@@ -18,7 +18,8 @@
 |------|--------|----------|--------   |
 | 1.0  | 18/04/2026 | Leonardo Carvalho | Criação do documento de acordo com o template |
 | 1.1  | 25/04/2026 | Leonardo Carvalho | Preenchimento do documento com algumas informações dos testes realizados até o momento |
-| 1.2  | 27/04/2026 | Sandro Teixeira | Finalização da primeira entrega do Plano de Testes, preenchendo as informações faltantes (Requisitos funcionais e não funcionais que estão dentro e fora do escopo) |
+| 1.2  | 27/04/2026 | Sandro Henrique | Finalização da primeira entrega do Plano de Testes, preenchendo as informações faltantes (Requisitos funcionais e não funcionais que estão dentro e fora do escopo) |
+| 1.3  | 22/06/2026 | Gabriel Soares | Alinhamento Entrega 2: E2E/RNF por integrante, metodologia, Java 17, links Issues e Sonar |
 
 ---
 
@@ -71,8 +72,10 @@ Para isso, serão adotadas abordagens de testes unitários e testes manuais, con
 | RNF01 – Usabilidade | Verificar facilidade de uso da interface |
 | RNF02 – Confiabilidade | Garantir funcionamento correto dos alertas e regras do sistema |
 | RNF03 – Integridade dos dados | Validar consistência dos dados cadastrados |
-| RNF04 – Manutenibilidade | Validar código por meio de testes unitários |
-| RNF05 – Compatibilidade | Testes em ambiente Java suportado pelo projeto |
+| RNF04 – Manutenibilidade | Validar código por meio de testes unitários, JaCoCo, PIT e Sonar |
+| RNF05 – Compatibilidade | Testes em ambiente Java 17 suportado pelo projeto |
+| RNF06 – Estresse (concorrência) | Múltiplos usuários simultâneos sem falhas (`EstresseMultiUsuarioTest`) |
+| RNF07 – Segurança (autenticação) | Bloqueio de acesso com credenciais inválidas (`EntrarPessoaSegurancaTest`) |
 
 ---
 
@@ -94,7 +97,7 @@ Esses recursos não serão testados porque não estão incluídos nas especifica
 
 | Requisito | Justificativa |
 |----------|----------------|
-| Testes de carga e stress | Não previstos para esta fase |
+| Testes de carga em larga escala | Não previstos para esta fase |
 | Testes de segurança avançados | Fora do escopo acadêmico do projeto |
 | Testes de desempenho em larga escala | Não aplicável nesta entrega |
 | Testes de banco de dados em alto volume | Não contemplados |
@@ -117,7 +120,7 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 > 📢 **Instrução:** Defina quem faz o quê no projeto.
 
-| Papel | Responsável 
+| Papel | Responsável |
 |------|-------------|
 | Plano de Teste  | Leonardo e Sandro  |
 | Testes manuais | Todos |
@@ -125,23 +128,25 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 | Organização do github | Alexandre |
 | Slides | Sandro, Gabriel e Mateus |
 | Planilha para testes manuais | Sandro |
-| TestLink | Gabriel |
+| TestLink | Gabriel — [http://vania.ic.uff.br/testlink/](http://vania.ic.uff.br/testlink/) — plano **TEP: Teste em produção** |
 
 ### Entrega 2 — Classe sob teste (contribuição individual)
 
 | Integrante | Classe | Pacote | Testes | Meta JaCoCo (branches) | Meta PIT |
 |------------|--------|--------|--------|------------------------|----------|
 | **Alexandre Colmenero** | **`Uso`** | **`backend.usuario`** | **`UsoTest` / `CadastroMedicamentoE2ETest`** | **≥ 80%** | **≥ 80%** |
-| **Gabriel Soares** | **`Data`** | **`backend.gerenciamento`** | **`DataTest`** | **≥ 80%** | **≥ 80%** |
-| Leonardo Carvalho | `Agenda` | `backend` | `AgendaTest` | ≥ 80% | ≥ 80% |
-| Mateus Magalhães | `PessoaFisica` | `backend.usuario` | `PessoaFisicaTest` | ≥ 80% | ≥ 80% |
-| Sandro Henrique | `FuncoesArquivos` | `backend` | `FuncoesArquivosTest` | ≥ 80% | ≥ 80% |
+| **Gabriel Soares** | **`Data`** | **`backend.gerenciamento`** | **`DataTest` / `InicioE2ETest` / RNF** (`EntrarPessoaSegurancaTest`, `EstresseMultiUsuarioTest`, `InicioUsabilidadeTest`) | **≥ 80%** | **≥ 80%** |
+| Leonardo Carvalho | `Agenda` | `backend` | `AgendaTest` / `AgendaContatoMedicoE2ETest` (CT-CE-02 unitário) | ≥ 80% | ≥ 80% |
+| Mateus Magalhães | `PessoaFisica` | `backend.usuario` | `PessoaFisicaTest` / `FluxoCadastroLoginE2ETest` (CT-CE-03) / `CadastroPessoaE2ETest` | ≥ 80% | ≥ 80% |
+| Sandro Henrique | `FuncoesArquivos` | `backend` | `FuncoesArquivosTest` / `CadastroFarmaciaE2ETest` / `EntrarFarmaciaE2ETest` | ≥ 80% | ≥ 80% |
 
 > Detalhamento completo: [`DIVISAO_CLASSES_ENTREGA2.md`](./DIVISAO_CLASSES_ENTREGA2.md)
 
-**Gabriel Soares (`Data`):** responsável por testes estruturais (todas-arestas) e testes baseados em defeitos (PIT) na classe `Data`, que centraliza verificação de hora/dia e formatação de dias da semana para alertas de medicação.
+**Gabriel Soares (`Data`):** testes estruturais e PIT na classe `Data`; E2E `InicioE2ETest`; testes RNF de segurança, estresse e usabilidade documentados em [`TESTES_FUNCIONAIS.md`](./TESTES_FUNCIONAIS.md).
 
-**Alexandre Colmenero (`Uso`):** responsável por testes estruturais (todas-arestas) e testes baseados em defeitos (PIT) na classe `Uso` com uso do JUnit e JaCoCo, além do teste E2E de Cadastro de Medicamento pela interface utilizando AssertJ Swing.
+**Alexandre Colmenero (`Uso`):** testes estruturais e PIT em `Uso`; E2E `CadastroMedicamentoE2ETest`; casos CT-AVL-01/02.
+
+**Issues do projeto:** [GitHub Issues](https://github.com/vaniacourses/trabalho-qualidade-e-teste-grupo-5/issues). **Inspeção SonarQube:** responsabilidade compartilhada; evidências na [Apresentação Entrega 2](https://canva.link/aop9a2ac2q3hgo9).
 
 ---
 
@@ -153,11 +158,12 @@ Além disso, os testes visam garantir a integridade dos dados, o tratamento de e
 
 No projeto serão conduzidas as seguintes fases de teste:
 
-- **Teste de Unidade:** verificação individual das classes do sistema, garantindo o correto funcionamento de métodos e regras de negócio.
-
-- **Teste de Integração:** validação da interação entre diferentes componentes do sistema, como o gerenciamento de usuários e o controle de medicamentos.
-
-- **Teste de Sistema (Manual):** execução de testes do ponto de vista do usuário, validando funcionalidades como login, cadastro e gerenciamento de contatos.
+- **Teste de Unidade:** classes isoladas em `src/test/java/backend` (JUnit + Mockito).
+- **Teste de Integração:** fluxos reais em `src/test/java/backend/integracao`.
+- **Teste de Sistema (E2E):** AssertJ Swing em `src/test/java/frontend` (equivalente a Selenium neste projeto desktop).
+- **Teste Estrutural / Mutação:** JaCoCo (branches ≥ 80%) e PIT (≥ 80%) por integrante.
+- **Inspeção estática:** SonarQube (Docker local) — evidências compartilhadas na [Apresentação Entrega 2](https://canva.link/aop9a2ac2q3hgo9).
+- **Teste manual:** casos em [`testes_manuais/`](./testes_manuais/).
 
 ---
 
@@ -236,8 +242,9 @@ Os entregáveis de teste são fornecidos conforme abaixo
 | :--- | :---: | :--- |
 | 1 | JUnit 5 | Framework utilizado para a criação e execução dos testes unitários do sistema |
 | 2 | Mockito | Biblioteca utilizada para simular dependências e facilitar a execução de testes unitários |
-| 3 | Eclipse | Visual Studio Code | Ambiente utilizado para desenvolvimento e execução dos testes |
-| 4 | Computador | Pelo menos 5 computadores rodam Windows |
+| 3 | Eclipse / VS Code | IDEs usadas no desenvolvimento |
+| 4 | JaCoCo / PIT / SonarQube | Cobertura, mutação e inspeção estática |
+| 5 | AssertJ Swing | Testes E2E da interface Swing |
 ---
 
 ### 💻 4.2 Ambiente de Teste
@@ -248,8 +255,8 @@ Para a execução do sistema e realização dos testes, é necessário dispor de
 
 **Requisitos de Software:** 
 
-- Sistema operacional Windows 8 ou superior, ou distribuições Linux/macOS com suporte a ambiente Java
-- Java Development Kit (JDK) versão 8 ou superior
+- Sistema operacional Windows, Linux ou macOS com suporte a Java 17
+- Java Development Kit (JDK) **17**
 - Framework de testes JUnit 5
 - Biblioteca Mockito
 - Ambiente de desenvolvimento integrado (IDE), como Eclipse IDE ou IntelliJ IDEA
