@@ -115,16 +115,44 @@ Este documento registra **onde e como** cada integrante utilizou ferramentas de 
 
 ## 3. Leonardo Carvalho ([@leonardocfonseca](https://github.com/leonardocfonseca))
 
-*(Preencher — classe `Agenda`, `AgendaTest`, `AgendaContatoMedicoE2ETest`)*
+### Registro A — Expansão de Testes Unitários (`AgendaTest.java`)
 
 | Campo | Conteúdo |
 |-------|----------|
-| **Atividade** | |
-| **Ferramenta** | |
-| **Prompt utilizado** | |
-| **Resposta do modelo** | |
-| **Validação humana** | |
-| **Resultado** | |
+| **Atividade** | Aumentar a cobertura de testes unitários da classe `Agenda` para garantir qualidade e eliminar mutantes gerados pelo PITest. |
+| **Ferramenta** | Cursor (modo Agent) |
+| **Prompt utilizado** | *"Preciso aprimorar os testes unitários de `AgendaTest.java` para cobrir cenários de falha na classe `Agenda.java`, como inserção de contatos nulos, ordenação e comportamento de exceções na conversão de string para agenda. Sugira cenários de teste adicionais."* |
+| **Resposta do modelo** | Sugeriu a criação de testes de tratamento de erro (como `testAdicionarContatoComException` e `testStringToAgendaComStringNula`) e o uso do Mockito (`MockedStatic`) para simular o resgate de contatos de arquivos. |
+| **Validação humana** | Executei `mvn test` para validar se os novos cenários rodavam perfeitamente e conferi o relatório do JaCoCo para assegurar que todas as linhas e ramos da classe `Agenda` estivessem cobertos. |
+| **Resultado** | Testes unitários expandidos e integrados à classe `AgendaTest.java` no branch `leonardo`. |
+
+---
+
+### Registro B — Criação de Teste de Interface E2E (`AgendaContatoMedicoE2ETest.java`)
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Atividade** | Implementação de testes automatizados ponta a ponta (E2E) para verificar o fluxo de adição de contatos médicos por meio da interface gráfica Swing. |
+| **Ferramenta** | Cursor (modo Agent) |
+| **Prompt utilizado** | *"Crie um teste automatizado E2E em Java com JUnit e AssertJ Swing (`AgendaContatoMedicoE2ETest.java`) que simule o login na aplicação, abra a tela `ContatosMedicos.java`, cadastre um médico com nome, especialidade e telefone, e verifique se as informações são exibidas na tabela e persistidas em disco."* |
+| **Resposta do modelo** | Gerou a classe `AgendaContatoMedicoE2ETest` com o fluxo completo de interação Swing: busca programática de botões e campos de texto, simulação do preenchimento e clique em "Salvar", além da validação das linhas da tabela e da persistência final. |
+| **Validação humana** | Rodei o teste E2E localmente para observar a execução do robô na interface Swing, confirmando que a janela abria, inseria as credenciais de login, adicionava o contato e fechava os frames corretamente, limpando os dados de teste no final. |
+| **Resultado** | Novo arquivo de teste E2E adicionado em `src/test/java/frontend/AgendaContatoMedicoE2ETest.java`. |
+
+---
+
+### Registro C — Eliminação de Mutante Sobrevivente (`Agenda.java`)
+
+| Campo | Conteúdo |
+|-------|----------|
+| **Atividade** | Eliminação de mutante sobrevivente do PITest no método `removerContato` da classe `Agenda.java`. |
+| **Ferramenta** | Cursor (modo Agent) |
+| **Prompt utilizado** | *"No relatório do PITest, vejo que há um mutante sobrevivente no método `removerContato` da classe `Agenda.java`. A remoção da chamada `this.setContatos(novaLista)` não altera o resultado dos testes, pois `novaLista` compartilha a mesma referência de memória que `this.contatos`. Como posso corrigir a classe `Agenda.java` para que o teste falhe se a linha de atualização da lista for removida (matando o mutante)?"* |
+| **Resposta do modelo** | Sugeriu instanciar uma nova lista (`new ArrayList<>(this.getContatos())`) para desacoplar as referências de memória. Assim, qualquer alteração na cópia não afetará a lista original a menos que `this.setContatos(novaLista)` seja efetivamente chamado, o que mata o mutante sobrevivente de remoção de chamada de método. |
+| **Validação humana** | Executei os testes de mutação locais via PIT (`mvn pitest:mutationCoverage`) para a classe `Agenda` e confirmei que a taxa de mutantes mortos subiu para 100%, eliminando o mutante sobrevivente do método. |
+| **Resultado** | Modificação na inicialização de `novaLista` no método `removerContato` de `Agenda.java` integrada com sucesso. |
+
+
 
 ---
 
