@@ -204,16 +204,31 @@ Este documento registra **onde e como** cada integrante utilizou ferramentas de 
 
 *(Preencher — classe `FuncoesArquivos`, `FuncoesArquivosTest`, `CadastroFarmaciaE2ETest`)*
 
-| Campo | Conteúdo |
-|-------|----------|
-| **Atividade** | |
-| **Ferramenta** | |
-| **Prompt utilizado** | |
-| **Resposta do modelo** | |
-| **Validação humana** | |
-| **Resultado** | |
+### Registro A — Desenvolvimento do teste E2E (`CadastroFarmaciaE2ETest.java`)
+
+| Campo                  | Conteúdo                                                                                                                                                                                                                                                                                                       |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Atividade**          | Desenvolver um teste automatizado ponta a ponta (E2E) para validar o fluxo de cadastro de farmácia na interface gráfica Swing utilizando AssertJ Swing.                                                                                                                                                        |
+| **Ferramenta**         | ChatGPT                                                                                                                                                                                                                                                                                                        |
+| **Prompt utilizado**   | *"Preciso implementar um teste E2E para o fluxo de cadastro de farmácia. Analise as telas, o fluxo da aplicação e as classes relacionadas para sugerir a estrutura do teste, a localização dos componentes e as verificações necessárias."*                                                                    |
+| **Resposta do modelo** | A IA auxiliou na análise do fluxo do cadastro, sugeriu a estrutura do teste utilizando AssertJ Swing, indicou possíveis formas de localizar os componentes da interface e apresentou sugestões para validar a persistência dos dados após o cadastro.                                                          |
+| **Validação humana**   | Analisei o código sugerido, conferi manualmente as classes da interface e da camada de negócio para verificar se o fluxo correspondia ao funcionamento da aplicação. Após os ajustes necessários, executei o teste localmente para confirmar que a automação reproduzia corretamente o comportamento esperado. |
+| **Resultado**          | O teste E2E foi implementado e adaptado à estrutura do projeto, incorporando apenas as sugestões que se mostraram compatíveis com o código da aplicação após revisão e validação manual.                                                                                                                       |
+
 
 ---
+
+### Registro B — Revisão e Correção de Testes Unitários e de Mutação
+
+| Campo                  | Conteúdo                                                                                                                                                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Atividade**          | Revisar os testes unitários existentes e corrigir falhas identificadas durante a execução dos testes de mutação, aprimorando a qualidade dos testes e aumentando a cobertura do projeto.                                                                                                                |
+| **Ferramenta**         | ChatGPT                                                                                                                                                                                                                                                                                                 |
+| **Prompt utilizado**   | *"Analise estes testes unitários e os resultados dos testes de mutação. Identifique possíveis falhas na cobertura, sugira novos casos de teste e explique como corrigir os mutantes sobreviventes sem comprometer o comportamento esperado da aplicação."*                                              |
+| **Resposta do modelo** | A IA sugeriu novos cenários de teste, apontou possíveis lacunas na cobertura e explicou como determinados mutantes poderiam ser eliminados por meio de testes mais específicos. Também apresentou sugestões de refatoração para tornar os testes mais claros e organizados.                             |
+| **Validação humana**   | Todas as sugestões foram analisadas e comparadas com os requisitos da aplicação antes de serem utilizadas. Revisei manualmente cada alteração proposta e executei novamente os testes unitários e de mutação para confirmar que as mudanças eram corretas e não introduziam comportamentos indesejados. |
+| **Resultado**          | Os testes unitários foram aprimorados após revisão manual das sugestões fornecidas pela IA, reduzindo a quantidade de mutantes sobreviventes e aumentando a confiabilidade da suíte de testes do projeto.                                                                                               |
+
 
 ## Boas práticas adotadas pelo grupo
 
