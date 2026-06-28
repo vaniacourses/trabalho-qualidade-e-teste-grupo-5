@@ -159,16 +159,44 @@ Este documento registra **onde e como** cada integrante utilizou ferramentas de 
 
 ## 4. Mateus Magalhães ([@MGLHS](https://github.com/MGLHS))
 
-*(Preencher — classe `PessoaFisica`, `PessoaFisicaTest`, `FluxoCadastroLoginE2ETest`)*
+### Registro A — Revisão e Correção de Testes Unitários e de Mutação (PessoaFisicaTest.java)
 
 | Campo | Conteúdo |
 |-------|----------|
-| **Atividade** | |
-| **Ferramenta** | |
-| **Prompt utilizado** | |
-| **Resposta do modelo** | |
-| **Validação humana** | |
-| **Resultado** | |
+| *Atividade* | Revisar e corrigir a cobertura de testes unitários (JaCoCo ≥ 80% de branches) e testes de mutação (PIT ≥ 80%) para a classe PessoaFisica.java. |
+| *Ferramenta* | Antigravity (Gemini) |
+| *Prompt utilizado* | "Preciso revisar e corrigir os testes da classe PessoaFisicaTest.java para garantir cobertura de branches superior a 80% no JaCoCo e cobertura de mutação superior a 80% no PIT. Sugira correções para cobrir cenários de cadastros de endereço nulo, formatação de CPF e fluxo de salvamento de arquivos de usos." |
+| *Resposta do modelo* | Sugeriu correções nos métodos de teste de PessoaFisicaTest.java para validar comportamentos com dados nulos, formatação de CPF e persistência de arquivos, garantindo que mutantes sobreviventes fossem eliminados. |
+| *Validação humana* | Executei os testes locais e os relatórios do JaCoCo e PITest para assegurar que todas as linhas, ramos e mutantes foram devidamente testados e superaram o limiar de 80%. |
+| *Resultado* | Testes de PessoaFisicaTest.java revisados, corrigidos e validados no repositório. |
+
+---
+
+### Registro B — Revisão e Correção do Teste E2E (FluxoCadastroLoginE2ETest.java)
+
+| Campo | Conteúdo |
+|-------|----------|
+| *Atividade* | Revisar e corrigir testes automatizados ponta a ponta (E2E) para o fluxo de cadastro seguido de login (Caso de Teste CT-CE-03 — técnica Grafo Causa-Efeito). |
+| *Ferramenta* | Antigravity (Gemini) |
+| *Prompt utilizado* | "Preciso revisar e corrigir o teste E2E FluxoCadastroLoginE2ETest.java que valida o fluxo de cadastro seguido de login (CT-CE-03) utilizando a técnica de Grafo Causa-Efeito. Corrija o fluxo de fechamento de janelas e a verificação dos botões da tela inicial." |
+| *Resposta do modelo* | Apresentou sugestões de reestruturação do teste E2E usando AssertJ Swing para gerenciar de forma estável a abertura de janelas e a validação do estado dos componentes no fluxo de login. |
+| *Validação humana* | Executei a suíte de testes funcionais localmente e verifiquei visualmente a execução do robô simulando o fluxo E2E de cadastro e login de pessoa física sem erros. |
+| *Resultado* | Classe FluxoCadastroLoginE2ETest.java revisada e salva. |
+
+---
+
+### Registro C — Revisão e Correção da Classe de Produção (PessoaFisica.java)
+
+| Campo | Conteúdo |
+|-------|----------|
+| *Atividade* | Revisar e corrigir falhas de execução, exceções de ponteiro nulo (NullPointerException) e problemas de concorrência na classe de produção PessoaFisica.java. |
+| *Ferramenta* | Antigravity (Gemini) |
+| *Prompt utilizado* | "Preciso revisar e corrigir a classe PessoaFisica.java para tratar possíveis NullPointerExceptions ao obter endereços ou salvar usos, ajustar a portabilidade dos caminhos de arquivos para usar barras normais e corrigir a lógica de remoção de medicamentos para evitar exceções de modificação concorrente." |
+| *Resposta do modelo* | Recomendou incluir verificações de nulidade para o endereço no método toString, alterar o separador de caminho de arquivos para barras normais (/) e substituir a iteração for-each no método removerUsoNaListaUsoMedicamentos por um loop indexado convencional para garantir segurança de remoção. |
+| *Validação humana* | Executei os testes unitários e de mutação após a aplicação dos ajustes de código e assegurei que todos os defeitos de runtime e mutantes foram eliminados. |
+| *Resultado* | Ajustes na classe PessoaFisica.java revisados, corrigidos e integrados no repositório. |
+
+
 
 ---
 
