@@ -202,8 +202,6 @@ Este documento registra **onde e como** cada integrante utilizou ferramentas de 
 
 ## 5. Sandro Henrique ([@sandrohmt](https://github.com/sandrohmt))
 
-*(Preencher — classe `FuncoesArquivos`, `FuncoesArquivosTest`, `CadastroFarmaciaE2ETest`)*
-
 ### Registro A — Desenvolvimento do teste E2E (`CadastroFarmaciaE2ETest.java`)
 
 | Campo                  | Conteúdo                                                                                                                                                                                                                                                                                                       |
